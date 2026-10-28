@@ -212,16 +212,12 @@ function desenharCena() {
   // chão
   el('line', { x1: 0, x2: W, y1: chao, y2: chao, stroke: 'var(--chao)', 'stroke-width': 3, 'stroke-dasharray': '2 14', 'stroke-linecap': 'round' }, gCena);
 
-  // marcadores futuro / legado
-  const mk = (txt, y) => { const t = el('text', { x: 36, y, 'font-size': L.modo === 'largo' ? 22 : 26, 'font-weight': 800, 'letter-spacing': '.2em', fill: 'var(--suave)' }, gCena); t.textContent = txt; return t; };
-  if (L.modo === 'largo') { mk('▲  FUTURO · O QUE VAMOS VIVER', chao - 18); mk('▼  LEGADO · O QUE NOS SUSTENTA', chao + 34); }
-  else { mk('▲ FUTURO', chao - 16); mk('▼ LEGADO', chao + 38); }
-
-  // raízes
+  // raízes: descem antes de abrir para os lados, para que mesmo na espessura máxima (54)
+  // não passem sobre o marcador de legado
   gRaizes = el('g', {}, gCena); rootEls = [];
   zonas.forEach((z, i) => {
     const p = EVENTO.pilares[i], ex = L.rotuloX[i];
-    rootEls.push(el('path', { class: 'raiz', d: `M${cx},${chao - 4} C${cx},${chao + 70} ${ex},${chao + 20} ${ex},${raizY}`, stroke: corDoPilar(p), 'stroke-width': 8, 'stroke-opacity': .9 }, gRaizes));
+    rootEls.push(el('path', { class: 'raiz', d: tracarRaiz(ex, 8), stroke: corDoPilar(p), 'stroke-width': 8, 'stroke-opacity': .9 }, gRaizes));
     el('circle', { cx: ex, cy: raizY, r: 9, fill: corDoPilar(p) }, gRaizes);
   });
   // rótulos das raízes
@@ -247,6 +243,13 @@ function desenharCena() {
     }
   });
 
+  // marcadores futuro / legado: desenhados depois das raízes (que engrossam com os compromissos),
+  // com halo na cor do fundo para continuarem legíveis por cima delas
+  const gMarcos = el('g', {}, gCena);
+  const mk = (txt, y) => { const t = el('text', { x: 36, y, 'font-size': L.modo === 'largo' ? 22 : 26, 'font-weight': 800, 'letter-spacing': '.2em', fill: 'var(--suave)', stroke: 'var(--bg2)', 'stroke-width': 10, 'stroke-linejoin': 'round', 'paint-order': 'stroke' }, gMarcos); t.textContent = txt; return t; };
+  if (L.modo === 'largo') { mk('▲  FUTURO · O QUE VAMOS VIVER', chao - 18); mk('▼  LEGADO · O QUE NOS SUSTENTA', chao + 34); }
+  else { mk('▲ FUTURO', chao - 16); mk('▼ LEGADO', chao + 38); }
+
   // frutos, depois as etiquetas dos pilares POR CIMA
   gFrutos = el('g', {}, svg);
   gBadges = el('g', {}, svg);
@@ -258,6 +261,11 @@ function desenharCena() {
   });
   frutosDom.clear();
   montado = true;
+}
+// a ponta (redonda) recua metade da espessura, para a raiz grossa não invadir o rótulo do pilar
+function tracarRaiz(ex, w) {
+  const { cx, chao, raizY } = L, fim = raizY - Math.max(0, w / 2 - 6);
+  return `M${cx},${chao - 4} C${cx},${chao + 120} ${ex},${chao + 60} ${ex},${fim}`;
 }
 function quebrar(txt, max) {
   const pal = txt.split(' '), ls = []; let atual = '';
@@ -351,7 +359,8 @@ function renderizar(forcar = false) {
   const tot = dados.total || 0;
   EVENTO.pilares.forEach((p, idx) => {
     const n = dados.grupos.filter((g) => g.pilar === p.id).reduce((s, g) => s + g.n, 0);
-    rootEls[idx].setAttribute('stroke-width', 8 + (tot ? (n / tot) * 46 : 0));
+    const w = 8 + (tot ? (n / tot) * 46 : 0);
+    rootEls[idx].setAttribute('stroke-width', w); rootEls[idx].setAttribute('d', tracarRaiz(L.rotuloX[idx], w));
     if (rotuloEls[idx]) rotuloEls[idx].cn.textContent = n;
   });
   animarTotal(tot);
@@ -433,7 +442,7 @@ function iniciarDemo() {
 
 
 // ---------- PNG da árvore (imagem final para deck e comunicação) ----------
-const PROPS = ['fill', 'fill-opacity', 'stroke', 'stroke-width', 'stroke-opacity', 'stroke-linecap', 'stroke-dasharray', 'opacity', 'font-weight', 'font-family', 'letter-spacing', 'text-anchor', 'transform', 'filter', 'display'];
+const PROPS = ['fill', 'fill-opacity', 'stroke', 'stroke-width', 'stroke-opacity', 'stroke-linecap', 'stroke-dasharray', 'stroke-linejoin', 'paint-order', 'opacity', 'font-weight', 'font-family', 'letter-spacing', 'text-anchor', 'transform', 'filter', 'display'];
 function carregarImagem(src) { return new Promise((ok, erro) => { const i = new Image(); i.onload = () => ok(i); i.onerror = erro; i.src = src; }); }
 async function baixarPNG() {
   const cw = 1920, ch = Math.round(1920 * H / W), k = cw / W;
