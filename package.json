@@ -1,0 +1,14 @@
+{
+  "name": "cooplivre-avanca",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dinâmica ao vivo Avança Cooplivre 27-30 · Árvore do Legado e Futuro",
+  "scripts": {
+    "dev": "node dev-server.mjs"
+  },
+  "dependencies": {
+    "postgres": "^3.4.5"
+  },
+  "engines": { "node": ">=20" }
+}

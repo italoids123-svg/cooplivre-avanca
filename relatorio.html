@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Relatório · Avança Cooplivre 27–30</title>
+<link rel="icon" href="assets/logos/avanca-roxo.png">
+<style>
+  :root{--petroleo:#00353E;--teal:#0EAF9E;--lima:#C6E03A;--suave:#5A7076;--linha:#D6E0DF}
+  *{box-sizing:border-box}
+  body{margin:0;background:#E9EFEE;color:#0B2A30;font-family:"Source Sans 3","Source Sans Pro",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:13px;line-height:1.35;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .barra{position:sticky;top:0;z-index:9;background:var(--petroleo);color:#fff;padding:10px 20px;display:flex;gap:12px;align-items:center}
+  .barra b{flex:1}
+  .barra button,.barra input{font:inherit;border-radius:8px;border:0;padding:8px 14px}
+  .barra button{background:var(--lima);color:#06262C;font-weight:800;cursor:pointer}
+  .folha{width:297mm;min-height:210mm;margin:14px auto;background:#fff;padding:12mm 13mm;box-shadow:0 4px 20px rgba(0,53,62,.15);position:relative;page-break-after:always;break-after:page}
+  .folha:last-of-type{page-break-after:auto;break-after:auto}
+  @page{size:A4 landscape;margin:0}
+  @media print{body{background:#fff}.barra{display:none}.folha{margin:0;box-shadow:none;width:297mm;height:210mm;overflow:hidden}}
+  .topo{display:flex;align-items:center;gap:14px;border-bottom:3px solid var(--teal);padding-bottom:8px;margin-bottom:10px}
+  .topo img{height:38px} .topo .tit{flex:1} .topo h1{margin:0;font-size:20px;line-height:1.1} .topo p{margin:2px 0 0;color:var(--suave)}
+  .topo .data{font-weight:800;color:var(--petroleo);text-align:right;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+  .kpi{background:#F2F6F5;border-radius:10px;padding:8px 12px}
+  .kpi .v{font-size:26px;font-weight:900;line-height:1;color:var(--petroleo)} .kpi .l{color:var(--suave);font-size:11.5px;margin-top:3px;font-weight:600}
+  h2{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--suave);margin:10px 0 6px}
+  .barra-p{display:grid;grid-template-columns:150px 1fr 70px;gap:8px;align-items:center;margin:3px 0;font-weight:700}
+  .barra-p .tr{height:14px;background:#EAF0EF;border-radius:7px;overflow:hidden} .barra-p .ch{height:100%;border-radius:7px}
+  .barra-p .n{text-align:right;font-variant-numeric:tabular-nums}
+  .cols{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .col{border:1px solid var(--linha);border-radius:10px;overflow:hidden}
+  .col .h{padding:6px 9px;color:#fff;font-weight:800;font-size:12px;line-height:1.15}
+  .col .h small{display:block;font-weight:600;opacity:.9;font-size:10.5px}
+  .col ol{margin:0;padding:6px 9px 6px 24px} .col li{margin:2px 0} .col li span{float:right;font-weight:800;color:var(--petroleo)}
+  .col .vz{padding:10px;color:var(--suave)}
+  .duas{display:grid;grid-template-columns:1fr 1.25fr;gap:14px}
+  table{border-collapse:collapse;width:100%} th,td{padding:5px 8px;border-bottom:1px solid #E6EEED;text-align:right;font-variant-numeric:tabular-nums} th:first-child,td:first-child{text-align:left}
+  th{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--suave)}
+  .t15{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(8,auto);grid-auto-flow:column;column-gap:18px}
+  .t15 div{display:flex;gap:5px;align-items:baseline;padding:3px 0;border-bottom:1px solid #EEF3F2}
+  .t15 b{width:20px;color:var(--suave);font-weight:700} .t15 small{color:var(--suave)} .t15 span{margin-left:auto;font-weight:800}
+  .leitura{background:#F2F6F5;border-left:5px solid var(--teal);border-radius:8px;padding:9px 14px}
+  .leitura ul{margin:0;padding-left:18px} .leitura li{margin:3px 0}
+  .prox{border:1px dashed var(--teal);border-radius:8px;padding:9px 14px;margin-top:10px}
+  .prox ol{margin:4px 0 0;padding-left:18px} .prox li{margin:3px 0}
+  .nota{color:var(--suave);font-size:10.5px;margin-top:8px}
+  .rodape{position:absolute;left:13mm;right:13mm;bottom:7mm;display:flex;justify-content:space-between;color:var(--suave);font-size:10px;border-top:1px solid var(--linha);padding-top:4px}
+  #login{max-width:340px;margin:12vh auto;background:#fff;padding:24px;border-radius:14px;text-align:center}
+  #login input{width:100%;height:42px;border:1.5px solid var(--linha);border-radius:10px;padding:0 12px;font:inherit;margin:10px 0}
+  #login button{width:100%;height:44px;background:var(--petroleo);color:#fff;border:0;border-radius:10px;font:inherit;font-weight:800;cursor:pointer}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div id="login"><b>Relatório · senha da equipe</b><input type="password" id="senha" placeholder="Senha"><button id="entrar">Abrir</button><p id="erro" style="color:#B3261E"></p></div>
+
+<div id="app" hidden>
+  <div class="barra"><b>Relatório executivo · pré-visualização</b><span id="atualizado" style="opacity:.8"></span><button onclick="window.print()">Imprimir / salvar como PDF</button></div>
+
+  <section class="folha" id="f1">
+    <div class="topo"><img src="assets/logos/avanca-cooplivre-escuro.png" alt="">
+      <div class="tit"><h1>Compromissos para viver a ambição</h1><p id="pergunta"></p></div>
+      <div class="data" id="data"></div></div>
+    <div class="kpis" id="kpis"></div>
+    <h2>Onde as pessoas escolheram agir</h2>
+    <div id="pilares"></div>
+    <h2>Os verbos mais citados em cada pilar</h2>
+    <div class="cols" id="cols"></div>
+    <div class="rodape"><span>Avança Cooplivre 27–30 · Legado e Futuro</span><span>1 / 2</span></div>
+  </section>
+
+  <section class="folha" id="f2">
+    <div class="topo"><img src="assets/logos/avanca-cooplivre-escuro.png" alt="">
+      <div class="tit"><h1>Leitura do conjunto</h1><p>Números do dia; a interpretação fica para a conversa com as lideranças.</p></div>
+      <div class="data" id="data2"></div></div>
+    <div class="duas">
+      <div><h2>Os 15 verbos mais citados</h2><div class="top15" id="top15"></div></div>
+      <div><h2>Compromissos por diretoria e pilar</h2><div id="matriz"></div><p class="nota" id="nota-matriz"></p></div>
+    </div>
+    <h2>O que os números mostram</h2>
+    <div class="leitura"><ul id="leitura"></ul></div>
+    <div class="prox"><b>Como levar isso adiante (sugestão)</b>
+      <ol>
+        <li>Devolver aos colaboradores a árvore final e os verbos mais citados, mostrando que o compromisso de cada um foi ouvido.</li>
+        <li>Levar os verbos de cada pilar aos Rituais de Gestão, para que o compromisso individual seja retomado e acompanhado, e não fique só no evento.</li>
+        <li>Revisitar os compromissos em cerca de 90 dias, com a pergunta: o que de fato foi feito a partir desse verbo?</li>
+      </ol></div>
+    <div class="rodape"><span id="gerado"></span><span>2 / 2</span></div>
+  </section>
+</div>
+
+<script type="module">
+import { EVENTO } from './assets/evento.js';
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const cap = (s) => (s ? s[0].toUpperCase() + s.slice(1) : s);
+const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
+const MIN_CELULA = 5; // não mostra recortes com menos de 5 pessoas (protege o anonimato)
+
+let chave = ''; try { chave = sessionStorage.getItem('cl_admin') || ''; } catch {}
+async function carregar() {
+  const r = await fetch('/api/admin', { headers: { 'x-admin-key': chave }, cache: 'no-store' });
+  if (!r.ok) throw new Error(r.status === 401 ? 'Senha incorreta' : 'Falha ao carregar');
+  return r.json();
+}
+async function abrir() {
+  try {
+    const D = await carregar(); try { sessionStorage.setItem('cl_admin', chave); } catch {}
+    $('#login').hidden = true; $('#app').hidden = false; montar(D);
+  } catch (e) { $('#login').hidden = false; $('#erro').textContent = chave ? e.message : ''; }
+}
+$('#entrar').onclick = () => { chave = $('#senha').value; abrir(); };
+$('#senha').addEventListener('keydown', (e) => e.key === 'Enter' && $('#entrar').click());
+if (chave) abrir();
+
+function montar(D) {
+  const vis = D.respostas.filter((r) => r.status === 'visivel');
+  const total = vis.length;
+  const grupos = D.grupos; // já agrupados no servidor
+  const agora = new Date();
+  $('#pergunta').textContent = EVENTO.pergunta;
+  $('#data').textContent = $('#data2').textContent = `${EVENTO.mote} · ${EVENTO.dataTexto}`;
+  $('#atualizado').textContent = 'Dados de ' + agora.toLocaleString('pt-BR');
+  $('#gerado').textContent = 'Gerado em ' + agora.toLocaleString('pt-BR') + ' · respostas anônimas, sem identificação pessoal';
+
+  const porPilar = EVENTO.pilares.map((p) => ({ p, n: vis.filter((r) => r.pilar === p.id).length, g: grupos.filter((g) => g.pilar === p.id) }));
+  const ordenado = porPilar.slice().sort((a, b) => b.n - a.n);
+  const distintos = grupos.length;
+  const topo = grupos[0];
+
+  $('#kpis').innerHTML = `
+    <div class="kpi"><div class="v">${total}</div><div class="l">compromissos registrados</div></div>
+    <div class="kpi"><div class="v">${distintos}</div><div class="l">verbos distintos (já agrupados)</div></div>
+    <div class="kpi"><div class="v">${total ? esc(ordenado[0].p.curto) : '—'}</div><div class="l">pilar com mais compromissos${total ? ` (${pct(ordenado[0].n, total)}%)` : ''}</div></div>
+    <div class="kpi"><div class="v">${topo ? esc(cap(topo.rotulo)) : '—'}</div><div class="l">verbo mais citado${topo ? ` (×${topo.n})` : ''}</div></div>`;
+
+  const max = Math.max(1, ...porPilar.map((x) => x.n));
+  $('#pilares').innerHTML = porPilar.map(({ p, n }) => `<div class="barra-p"><span>${p.id} · ${esc(p.curto)}</span><div class="tr"><div class="ch" style="width:${(n / max) * 100}%;background:${p.cor}"></div></div><span class="n">${n} · ${pct(n, total)}%</span></div>`).join('');
+
+  $('#cols').innerHTML = porPilar.map(({ p, n, g }) => `<div class="col"><div class="h" style="background:${p.cor}">${p.id} · ${esc(p.nome)}<small>${n} compromissos</small></div>${g.length ? `<ol>${g.slice(0, 6).map((x) => `<li>${esc(cap(x.rotulo))}<span>×${x.n}</span></li>`).join('')}</ol>` : '<div class="vz">Sem respostas</div>'}</div>`).join('');
+
+  $('#top15').innerHTML = `<div class="t15">${grupos.slice(0, 15).map((x, i) => `<div><b>${i + 1}.</b><span style="margin:0;font-weight:700">${esc(cap(x.rotulo))}</span><small>· ${esc(EVENTO.pilares[x.pilar - 1].curto)}</small><span>×${x.n}</span></div>`).join('')}</div>`;
+
+  // matriz diretoria × pilar (só com ≥ MIN_CELULA respostas por diretoria)
+  const comArea = vis.filter((r) => r.area);
+  const dirs = EVENTO.areas.map((a) => ({ a, tot: comArea.filter((r) => r.area === a.id).length })).filter((d) => d.tot >= MIN_CELULA);
+  const semArea = total - comArea.length;
+  $('#matriz').innerHTML = dirs.length ? `<table><thead><tr><th>Diretoria</th>${EVENTO.pilares.map((p) => `<th title="${esc(p.nome)}">${p.id}</th>`).join('')}<th>Total</th></tr></thead><tbody>${dirs.map((d) => `<tr><td>${esc(d.a.nome)}</td>${EVENTO.pilares.map((p) => `<td>${comArea.filter((r) => r.area === d.a.id && r.pilar === p.id).length}</td>`).join('')}<td><b>${d.tot}</b></td></tr>`).join('')}</tbody></table>` : '<p class="nota">Sem respostas suficientes por diretoria para exibir.</p>';
+  $('#nota-matriz').textContent = `Colunas: ${EVENTO.pilares.map((p) => p.id + ' ' + p.curto).join(' · ')}. A diretoria era opcional: ${semArea} de ${total} respostas (${pct(semArea, total)}%) não a informaram. Recortes com menos de ${MIN_CELULA} respostas não são exibidos, para preservar o anonimato.`;
+
+  // leitura objetiva
+  const ls = [];
+  if (total) {
+    ls.push(`<b>${esc(ordenado[0].p.nome)}</b> concentrou ${pct(ordenado[0].n, total)}% dos compromissos; <b>${esc(ordenado[4].p.nome)}</b> teve ${pct(ordenado[4].n, total)}%. ${pct(ordenado[0].n, total) - pct(ordenado[4].n, total) >= 15 ? 'A diferença é grande e vale entender o motivo antes de tirar conclusões.' : 'A distribuição entre os pilares é relativamente equilibrada.'}`);
+    const unicos = grupos.filter((g) => g.n === 1).length;
+    ls.push(`${pct(unicos, distintos)}% dos verbos (${unicos} de ${distintos}) apareceram uma única vez, e ${esc(cap(topo.rotulo))} foi o mais repetido, com ${topo.n} menções (${pct(topo.n, total)}% do total).`);
+    const gen = new Set(EVENTO.verbosGenericos);
+    const nGen = grupos.filter((g) => gen.has(g.chave)).reduce((s, g) => s + g.n, 0);
+    ls.push(`${pct(nGen, total)}% dos compromissos usaram verbos genéricos (${EVENTO.verbosGenericos.slice(0, 5).join(', ')}…). ${pct(nGen, total) >= 20 ? 'Isso sugere transformar esses verbos em ações concretas nos rituais de gestão.' : 'A maioria dos verbos é concreta o suficiente para virar ação.'}`);
+    porPilar.forEach(({ p, g }) => { if (g.length) ls.push(`<b>${esc(p.curto)}</b>: ${g.slice(0, 3).map((x) => esc(cap(x.rotulo))).join(', ')}.`); });
+  } else ls.push('Ainda não há respostas.');
+  $('#leitura').innerHTML = ls.map((x) => `<li>${x}</li>`).join('');
+}
+</script>
+</body>
+</html>

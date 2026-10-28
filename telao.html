@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avança Cooplivre 27–30 · Telão</title>
+<link rel="icon" href="assets/logos/avanca-roxo.png">
+<style>
+  :root{ --u:min(1vh,.75vw); }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden}
+  body{font-family:"Source Sans 3","Source Sans Pro",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;transition:background .4s,color .4s}
+  body.escuro{--bg1:#0C3E46;--bg2:#06262C;--txt:#FFFFFF;--suave:#9CC3C3;--tronco1:#2A6A6E;--tronco2:#164B50;--chao:rgba(198,224,58,.55);--card:#FFFFFF;--cardtxt:#00353E;--glow:.16;--sub:rgba(255,255,255,.05);color:var(--txt);
+    background:radial-gradient(120% 90% at 50% 0%,var(--bg1),var(--bg2))}
+  body.claro{--bg1:#FFFFFF;--bg2:#EDF3F2;--txt:#00353E;--suave:#4F6B70;--tronco1:#6B8D8A;--tronco2:#2E5A5D;--chao:rgba(14,175,158,.7);--card:#00353E;--cardtxt:#FFFFFF;--glow:.12;--sub:rgba(0,53,62,.05);color:var(--txt);
+    background:radial-gradient(120% 90% at 50% 0%,var(--bg1),var(--bg2))}
+  #palco{position:fixed;inset:0}
+  svg#arvore{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .hud{position:absolute;z-index:3}
+  #logo{left:calc(var(--u)*3);top:calc(var(--u)*2.6)}
+  #logo img{height:calc(var(--u)*9);width:auto;display:block}
+  #contador{left:calc(var(--u)*3.2);top:calc(var(--u)*12.5)}
+  #contador .num{font-size:calc(var(--u)*8.5);font-weight:900;line-height:.95;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  #contador .leg{font-size:calc(var(--u)*2.2);color:var(--suave);font-weight:600;letter-spacing:.04em}
+  #pergunta{left:50%;top:calc(var(--u)*2.4);transform:translateX(-50%);width:min(54%,calc(var(--u)*125));text-align:center}
+  #pergunta .sel{display:inline-block;font-size:calc(var(--u)*1.7);font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#06262C;background:#C6E03A;padding:calc(var(--u)*.45) calc(var(--u)*1.4);border-radius:999px;margin-bottom:calc(var(--u)*1);transition:background .35s,color .35s,transform .35s}
+  #pergunta .sel.novo{transform:scale(1.08)}
+  #pergunta h1{margin:0;font-size:calc(var(--u)*3.7);line-height:1.12;font-weight:800;text-wrap:balance}
+  #qr{right:calc(var(--u)*3);top:calc(var(--u)*2.6);background:var(--card);color:var(--cardtxt);border-radius:calc(var(--u)*1.6);padding:calc(var(--u)*1.4);text-align:center;box-shadow:0 calc(var(--u)*.6) calc(var(--u)*3) rgba(0,0,0,.35)}
+  #qr svg{width:calc(var(--u)*14);height:calc(var(--u)*14);display:block;margin:0 auto}
+  #qr .t{font-size:calc(var(--u)*1.8);font-weight:800;margin-top:calc(var(--u)*.9);line-height:1.1}
+  #qr .h{font-size:calc(var(--u)*1.35);font-weight:600;opacity:.75;margin-top:calc(var(--u)*.3);max-width:calc(var(--u)*16);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #status{right:calc(var(--u)*1.2);bottom:calc(var(--u)*1.2);font-size:calc(var(--u)*1.4);color:var(--suave);display:flex;align-items:center;gap:calc(var(--u)*.6);opacity:.9}
+  #status i{width:calc(var(--u)*1);height:calc(var(--u)*1);border-radius:50%;background:#56CC5E;display:inline-block}
+  #status.off i{background:#E8A33D}
+  #encerrada{left:50%;bottom:calc(var(--u)*1.4);transform:translateX(-50%);background:#C6E03A;color:#06262C;font-weight:900;font-size:calc(var(--u)*2);padding:calc(var(--u)*.6) calc(var(--u)*2);border-radius:999px;display:none;letter-spacing:.06em}
+  #vazio{left:50%;top:calc(var(--u)*36);transform:translateX(-50%);text-align:center;color:var(--suave);font-size:calc(var(--u)*2.8);font-weight:700;line-height:1.25;transition:opacity .6s;width:min(70%,calc(var(--u)*80))}
+  #vazio b{display:block;color:var(--txt);font-size:calc(var(--u)*4.4)}
+  #controles{position:fixed;left:50%;bottom:calc(var(--u)*2);transform:translateX(-50%);z-index:9;display:flex;gap:8px;background:rgba(0,0,0,.65);padding:8px;border-radius:14px;transition:opacity .4s;font-size:14px}
+  #controles button{appearance:none;border:0;background:#1d4a50;color:#fff;border-radius:10px;padding:10px 14px;font:inherit;cursor:pointer}
+  #controles kbd{background:#0b2a30;border-radius:5px;padding:1px 6px;margin-left:6px;font-size:12px;opacity:.85}
+  body.quieto{cursor:none}
+  body.quieto #controles{opacity:0;pointer-events:none}
+  #qrgrande{position:fixed;inset:0;z-index:20;background:rgba(3,20,24,.93);display:none;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--u)*2.4);text-align:center;color:#fff}
+  #qrgrande.on{display:flex}
+  #qrgrande .caixa{background:#fff;border-radius:calc(var(--u)*3);padding:calc(var(--u)*3)}
+  #qrgrande svg{width:calc(var(--u)*66);height:calc(var(--u)*66);display:block}
+  #qrgrande h2{margin:0;font-size:calc(var(--u)*5);font-weight:900}
+  #qrgrande p{margin:0;font-size:calc(var(--u)*3);color:#C6E03A;font-weight:800;letter-spacing:.02em}
+  /* arvore */
+  .f{transition:transform .9s cubic-bezier(.3,.9,.3,1)}
+  .i{transition:transform .9s cubic-bezier(.2,1.35,.4,1)}
+  .fruto-anel{fill:none;stroke:rgba(255,255,255,.4);stroke-width:3}
+  .f.pulso .fruto-anel{stroke:#fff;stroke-width:9;animation:pulso 1.4s ease-out}
+  @keyframes pulso{from{stroke-opacity:1;stroke-width:14}to{stroke-opacity:.4;stroke-width:3}}
+  .raiz{fill:none;stroke-linecap:round;transition:stroke-width 1s ease}
+  .rotulo-nome{font-weight:800}
+  text{font-family:inherit}
+  @media (max-aspect-ratio:1/1){
+    #pergunta{width:92%;top:calc(var(--u)*11)}
+    #pergunta h1{font-size:calc(var(--u)*3.9)}
+    #logo{top:calc(var(--u)*2)} #logo img{height:calc(var(--u)*7)}
+    #contador{left:auto;right:calc(var(--u)*3);top:calc(var(--u)*1.6);text-align:right}
+    #contador .num{font-size:calc(var(--u)*6.5)} #contador .leg{font-size:calc(var(--u)*1.8)}
+    #qr{top:auto;bottom:calc(var(--u)*3);right:auto;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:calc(var(--u)*2.4);padding:calc(var(--u)*1.6) calc(var(--u)*3)}
+    #qr svg{width:calc(var(--u)*13);height:calc(var(--u)*13);margin:0}
+    #qr .t{font-size:calc(var(--u)*2.6);margin:0} #qr .h{font-size:calc(var(--u)*1.9);max-width:none;margin-top:calc(var(--u)*.5)}
+    #vazio{top:calc(var(--u)*60)}
+  }
+  @media (min-aspect-ratio:21/9){ #pergunta{width:min(34%,calc(var(--u)*125))} }
+</style>
+</head>
+<body class="escuro">
+<div id="palco">
+  <svg id="arvore" xmlns="http://www.w3.org/2000/svg" aria-label="Árvore dos compromissos"></svg>
+
+  <div class="hud" id="logo"><img id="logo-img" src="assets/logos/avanca-cooplivre-branco.png" alt="Avança Cooplivre 27–30"></div>
+  <div class="hud" id="pergunta"><span class="sel" id="sel"></span><h1 id="h1"></h1></div>
+  <div class="hud" id="contador"><div class="num" id="total">0</div><div class="leg">compromissos</div></div>
+  <div class="hud" id="qr"><div id="qr-svg"></div><div class="t">Responda pelo celular</div><div class="h" id="qr-host"></div></div>
+  <div class="hud" id="vazio"><b>A árvore está esperando</b>o primeiro compromisso. Aponte a câmera para o QR code e escolha o seu verbo.</div>
+  <div class="hud" id="encerrada">COLETA ENCERRADA</div>
+  <div class="hud" id="status"><i></i><span id="status-txt">ao vivo</span></div>
+</div>
+
+<div id="qrgrande"><h2>Aponte a câmera e escolha o seu verbo</h2><div class="caixa"><div id="qrg-svg"></div></div><p id="qrg-url"></p></div>
+
+<div id="controles">
+  <button id="b-full">Tela cheia <kbd>F</kbd></button>
+  <button id="b-tema">Tema claro/escuro <kbd>T</kbd></button>
+  <button id="b-qr">QR grande <kbd>Q</kbd></button>
+  <button id="b-png">Baixar PNG <kbd>P</kbd></button>
+</div>
+
+<script src="assets/qrcode.js"></script>
+<script type="module">
+import { EVENTO, corTextoSobre } from './assets/evento.js';
+import { agrupar } from './lib/normaliza.js';
+
+const P = new URLSearchParams(location.search);
+const DEMO = P.has('demo');
+const INTERVALO = Number(P.get('intervalo')) || EVENTO.pollingMs;
+const SVGNS = 'http://www.w3.org/2000/svg';
+const $ = (s) => document.querySelector(s);
+const el = (nome, attrs = {}, pai) => { const e = document.createElementNS(SVGNS, nome); for (const k in attrs) e.setAttribute(k, attrs[k]); if (pai) pai.appendChild(e); return e; };
+const cap = (s) => s ? s[0].toUpperCase() + s.slice(1) : s;
+
+// ---------- textos ----------
+$('#sel').textContent = `${EVENTO.mote} · ${EVENTO.dataTexto}`;
+$('#h1').textContent = EVENTO.pergunta;
+
+// ---------- tema ----------
+let tema = P.get('tema') === 'claro' ? 'claro' : 'escuro';
+function aplicarTema() {
+  document.body.className = tema + (document.body.classList.contains('quieto') ? ' quieto' : '');
+  $('#logo-img').src = tema === 'escuro' ? 'assets/logos/avanca-cooplivre-branco.png' : 'assets/logos/avanca-cooplivre-escuro.png';
+  if (montado) { definirGradientes(); desenharCena(); renderizar(true); }
+}
+const corDoPilar = (p) => (tema === 'escuro' ? p.corTelao : p.cor);
+
+// ---------- QR ----------
+function qrSvg(texto) {
+  const qr = qrcode(0, 'M'); qr.addData(texto); qr.make();
+  const n = qr.getModuleCount(); let d = '';
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) d += `M${c},${r}h1v1h-1z`;
+  return `<svg xmlns="${SVGNS}" viewBox="-2 -2 ${n + 4} ${n + 4}" shape-rendering="crispEdges"><rect x="-2" y="-2" width="${n + 4}" height="${n + 4}" fill="#fff"/><path d="${d}" fill="#00353E"/></svg>`;
+}
+const urlConvite = P.get('url') || (location.origin + '/');
+$('#qr-svg').innerHTML = qrSvg(urlConvite); $('#qrg-svg').innerHTML = qrSvg(urlConvite);
+const hostTxt = urlConvite.replace(/^https?:\/\//, '').replace(/\/$/, '');
+$('#qr-host').textContent = hostTxt; $('#qrg-url').textContent = hostTxt;
+
+// ---------- layout (unidades do viewBox: lado menor = 1000) ----------
+let W = 1778, H = 1000, L = null;
+function calcularLayout() {
+  const asp = innerWidth / innerHeight;
+  if (asp >= 1) { H = 1000; W = 1000 * asp; } else { W = 1000; H = 1000 / asp; }
+  const cx = W / 2;
+  if (asp >= 1.1) {
+    const span = Math.min(W * 0.9, 2100);
+    const R = Math.min(span * 0.105, 180), step = (span - 2 * R) / 4;
+    const arco = [70, 0, -55, 0, 70];
+    const zonas = EVENTO.pilares.map((p, i) => ({ id: p.id, x: cx + (i - 2) * step, y: 440 + arco[i], R }));
+    L = { modo: 'largo', cx, zonas, troncoTopo: 600, chao: 722, raizY: 842, rotuloY: 856, rotuloW: Math.min(step * 0.96, 330),
+          rotuloX: zonas.map((z) => z.x), rBase: R * 0.25, topoMin: 190, fsNome: Math.min(...[27, Math.floor(step * 0.96 / 9.6)]) };
+  } else {
+    const span = W * 0.94, R = span * 0.19;
+    const y1 = H * 0.30, y2 = y1 + R * 1.5;
+    const pos = [[cx - span * 0.30, y1 + 20], [cx, y1 - 45], [cx + span * 0.30, y1 + 20], [cx - span * 0.225, y2], [cx + span * 0.225, y2]];
+    const zonas = EVENTO.pilares.map((p, i) => ({ id: p.id, x: pos[i][0], y: pos[i][1], R }));
+    const chao = y2 + R + 230, colW = span / 5;
+    L = { modo: 'alto', cx, zonas, troncoTopo: chao - 130, chao, raizY: chao + 140, rotuloY: chao + 152, rotuloW: colW,
+          rotuloX: [0, 1, 2, 3, 4].map((i) => cx + (i - 2) * colW), rBase: R * 0.25, topoMin: H * 0.15, fsNome: 19 };
+  }
+  for (const z of L.zonas) {
+    const p = EVENTO.pilares[z.id - 1], fs = L.modo === 'largo' ? (asp >= 1.6 ? 23 : 18) : 19;
+    z.tagFs = fs; z.tagTxt = `${p.id} · ${p.curto.toUpperCase()}`; z.tagW = z.tagTxt.length * fs * 0.8 + 52;
+    z.tagY = z.y - z.R - 6; z.tagBottom = z.tagY + 22;
+  }
+}
+
+// ---------- cena fixa ----------
+const svg = $('#arvore');
+let montado = false, gCena, gFrutos, gBadges, gRaizes, gRotulos, gZonas, defs, rootEls = [], rotuloEls = [], zonaTags = [];
+function definirGradientes() {
+  defs.querySelectorAll('.grad').forEach((n) => n.remove());
+  for (const p of EVENTO.pilares) {
+    const c = corDoPilar(p);
+    const g = el('radialGradient', { id: `g${p.id}`, cx: '.35', cy: '.3', r: '.85', class: 'grad' }, defs);
+    el('stop', { offset: '0', 'stop-color': misturar(c, '#ffffff', 0.32) }, g);
+    el('stop', { offset: '.55', 'stop-color': c }, g);
+    el('stop', { offset: '1', 'stop-color': misturar(c, '#000000', 0.22) }, g);
+  }
+}
+function misturar(a, b, t) {
+  const h = (x) => [1, 3, 5].map((i) => parseInt(x.slice(i, i + 2), 16));
+  const A = h(a), B = h(b); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0')).join('');
+}
+
+function desenharCena() {
+  calcularLayout();
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  svg.innerHTML = '';
+  defs = el('defs', {}, svg);
+  const f = el('filter', { id: 'blur', x: '-50%', y: '-50%', width: '200%', height: '200%' }, defs); el('feGaussianBlur', { stdDeviation: 28 }, f);
+  const ft = el('filter', { id: 'sombra', x: '-30%', y: '-30%', width: '160%', height: '160%' }, defs); el('feDropShadow', { dx: 0, dy: 5, stdDeviation: 6, 'flood-color': '#000', 'flood-opacity': tema === 'escuro' ? 0.4 : 0.22 }, ft);
+  const tg = el('linearGradient', { id: 'tronco', x1: 0, x2: 1, y1: 0, y2: 0 }, defs);
+  el('stop', { offset: 0, 'stop-color': 'var(--tronco2)' }, tg); el('stop', { offset: .45, 'stop-color': 'var(--tronco1)' }, tg); el('stop', { offset: 1, 'stop-color': 'var(--tronco2)' }, tg);
+  definirGradientes();
+
+  gCena = el('g', {}, svg);
+  const { cx, zonas, troncoTopo, chao, raizY } = L;
+
+  // brilho da copa
+  gZonas = el('g', { filter: 'url(#blur)' }, gCena);
+  zonas.forEach((z, i) => el('circle', { cx: z.x, cy: z.y, r: z.R * 1.12, fill: corDoPilar(EVENTO.pilares[i]), 'fill-opacity': tema === 'escuro' ? 0.17 : 0.14 }, gZonas));
+
+  // subsolo (legado)
+  el('rect', { x: 0, y: chao, width: W, height: H - chao, fill: 'var(--sub)' }, gCena);
+
+  // galhos: sobem do topo do tronco e chegam por baixo de cada copa
+  zonas.forEach((z, i) => {
+    const p = EVENTO.pilares[i], dx = z.x - cx, fimY = z.y + z.R * 0.5;
+    const larg = 16 - Math.min(8, Math.abs(dx) / 150);
+    const d = Math.abs(dx) < 5 ? `M${cx},${troncoTopo + 24} L${cx},${fimY}`
+      : `M${cx},${troncoTopo + 24} C${cx + dx * 0.15},${troncoTopo - 80} ${z.x - dx * 0.28},${fimY + 80} ${z.x},${fimY}`;
+    el('path', { d, fill: 'none', stroke: corDoPilar(p), 'stroke-opacity': .62, 'stroke-width': larg, 'stroke-linecap': 'round' }, gCena);
+  });
+  // tronco
+  const tw = 46;
+  el('path', { d: `M${cx - tw},${chao + 6} C${cx - tw * .45},${chao - 40} ${cx - tw * .6},${troncoTopo + 40} ${cx - tw * .42},${troncoTopo - 10} L${cx + tw * .42},${troncoTopo - 10} C${cx + tw * .6},${troncoTopo + 40} ${cx + tw * .45},${chao - 40} ${cx + tw},${chao + 6} Z`, fill: 'url(#tronco)' }, gCena);
+  // chão
+  el('line', { x1: 0, x2: W, y1: chao, y2: chao, stroke: 'var(--chao)', 'stroke-width': 3, 'stroke-dasharray': '2 14', 'stroke-linecap': 'round' }, gCena);
+
+  // marcadores futuro / legado
+  const mk = (txt, y) => { const t = el('text', { x: 36, y, 'font-size': L.modo === 'largo' ? 22 : 26, 'font-weight': 800, 'letter-spacing': '.2em', fill: 'var(--suave)' }, gCena); t.textContent = txt; return t; };
+  if (L.modo === 'largo') { mk('▲  FUTURO · O QUE VAMOS VIVER', chao - 18); mk('▼  LEGADO · O QUE NOS SUSTENTA', chao + 34); }
+  else { mk('▲ FUTURO', chao - 16); mk('▼ LEGADO', chao + 38); }
+
+  // raízes
+  gRaizes = el('g', {}, gCena); rootEls = [];
+  zonas.forEach((z, i) => {
+    const p = EVENTO.pilares[i], ex = L.rotuloX[i];
+    rootEls.push(el('path', { class: 'raiz', d: `M${cx},${chao - 4} C${cx},${chao + 70} ${ex},${chao + 20} ${ex},${raizY}`, stroke: corDoPilar(p), 'stroke-width': 8, 'stroke-opacity': .9 }, gRaizes));
+    el('circle', { cx: ex, cy: raizY, r: 9, fill: corDoPilar(p) }, gRaizes);
+  });
+  // rótulos das raízes
+  gRotulos = el('g', {}, gCena); rotuloEls = [];
+  zonas.forEach((z, i) => {
+    const p = EVENTO.pilares[i], cor = corDoPilar(p), x = L.rotuloX[i], y = L.rotuloY, g = el('g', {}, gRotulos);
+    if (L.modo === 'largo' && L.rotuloW >= 300) {
+      const w = L.rotuloW, fsN = L.fsNome;
+      el('circle', { cx: x - w / 2 + 22, cy: y + 24, r: 22, fill: cor }, g);
+      const nt = el('text', { x: x - w / 2 + 22, y: y + 33, 'text-anchor': 'middle', 'font-size': 26, 'font-weight': 900, fill: corTextoSobre(cor) }, g); nt.textContent = p.id;
+      const linhas = quebrar(p.nome, Math.floor((w - 56) / (fsN * 0.54)));
+      const tn = el('text', { x: x - w / 2 + 56, y: y + 18, 'font-size': fsN, class: 'rotulo-nome', fill: 'var(--txt)' }, g);
+      linhas.forEach((ln, k) => { const ts = el('tspan', { x: x - w / 2 + 56, dy: k === 0 ? 0 : fsN * 1.08 }, tn); ts.textContent = ln; });
+      const yc = y + 18 + (linhas.length - 1) * fsN * 1.08 + 50;
+      const cn = el('text', { x: x - w / 2 + 56, y: yc, 'font-size': 52, 'font-weight': 900, fill: cor }, g); cn.textContent = '0';
+      const cl = el('text', { x: x - w / 2 + 56, y: yc + 26, 'font-size': 21, 'font-weight': 600, fill: 'var(--suave)' }, g); cl.textContent = 'compromissos';
+      rotuloEls.push({ cn });
+    } else {
+      const t = el('text', { x, y: y + 20, 'text-anchor': 'middle', 'font-size': L.rotuloW >= 300 ? L.fsNome : Math.min(L.fsNome, 22), 'font-weight': 800, fill: 'var(--txt)' }, g); t.textContent = p.curto;
+      const cn = el('text', { x, y: y + 76, 'text-anchor': 'middle', 'font-size': 52, 'font-weight': 900, fill: cor }, g); cn.textContent = '0';
+      const cl = el('text', { x, y: y + 100, 'text-anchor': 'middle', 'font-size': 17, 'font-weight': 600, fill: 'var(--suave)' }, g); cl.textContent = 'compromissos';
+      rotuloEls.push({ cn });
+    }
+  });
+
+  // frutos, depois as etiquetas dos pilares POR CIMA
+  gFrutos = el('g', {}, svg);
+  gBadges = el('g', {}, svg);
+  const gT = el('g', {}, svg);
+  zonas.forEach((z, i) => {
+    const p = EVENTO.pilares[i], cor = corDoPilar(p), g = el('g', {}, gT);
+    el('rect', { x: z.x - z.tagW / 2, y: z.tagY - 22, width: z.tagW, height: 44, rx: 22, fill: cor }, g);
+    const t = el('text', { x: z.x, y: z.tagY + 8, 'text-anchor': 'middle', 'font-size': z.tagFs, 'font-weight': 900, 'letter-spacing': '.06em', fill: corTextoSobre(cor) }, g); t.textContent = z.tagTxt;
+  });
+  frutosDom.clear();
+  montado = true;
+}
+function quebrar(txt, max) {
+  const pal = txt.split(' '), ls = []; let atual = '';
+  for (const w of pal) { if ((atual + ' ' + w).trim().length > max && atual) { ls.push(atual); atual = w; } else atual = (atual + ' ' + w).trim(); }
+  if (atual) ls.push(atual); return ls;
+}
+
+// ---------- empacotamento dos frutos ----------
+function empacotar(grupos) {
+  const porPilar = new Map(EVENTO.pilares.map((p) => [p.id, []]));
+  for (const g of grupos) porPilar.get(g.pilar)?.push(g);
+  const total = grupos.reduce((s, g) => s + g.n, 0) || 1;
+  const TXT = 14; // altura mínima desejada da letra (unidades do viewBox)
+  // Fases: primeiro tenta manter a letra legível e reduz só a "parte da contagem";
+  // se não couber, aceita letra menor; por fim posiciona de qualquer jeito (nunca fica vazio).
+  const fases = [0.9, 0.78, 0.66, 0.54, 0.42];
+  for (let f = 0; f <= fases.length; f++) {
+    const forcar = f === fases.length;
+    const pisoTxt = forcar ? 0.4 : fases[f];
+    let escala = 1;
+    for (let tentativa = 0; tentativa < (forcar ? 1 : 9); tentativa++) {
+      const colocados = []; let ok = true;
+      for (const z of L.zonas) {
+        const lista = (porPilar.get(z.id) || []).slice().sort((a, b) => b.n - a.n || a.rotulo.localeCompare(b.rotulo));
+        for (const g of lista) {
+          const rCont = Math.min(L.rBase * escala * (1 + 0.42 * Math.sqrt(g.n - 1)), L.rBase * escala * 2.7);
+          const rTxt = (g.rotulo.length * 0.56 * TXT) / 1.55 * pisoTxt;
+          const r = Math.max(rCont, rTxt, 16);
+          let pos = null;
+          const alcance = z.R * (forcar ? 1.9 : 1.25) + 6;
+          for (let k = 0; k < 2600 && !pos; k++) {
+            const ang = k * 2.39996, rad = 5.2 * Math.sqrt(k) * (z.R / 170);
+            if (rad > alcance) break;
+            const x = z.x + Math.cos(ang) * rad, y = z.y + Math.sin(ang) * rad * 0.92;
+            if (y - r < L.topoMin || y + r > L.chao - 24 || x - r < 14 || x + r > W - 14) continue;
+            if (!forcar && L.zonas.some((zz) => Math.abs(x - zz.x) < zz.tagW / 2 + r && y - r < zz.tagBottom + 4 && y + r > zz.tagY - 26)) continue;
+            if (colocados.every((c) => Math.hypot(c.x - x, c.y - y) >= c.r + r + (forcar ? 1 : 4))) pos = { x, y };
+          }
+          if (!pos && forcar) pos = { x: Math.min(W - r, Math.max(r, z.x + (Math.random() - .5) * z.R)), y: Math.min(L.chao - r - 24, Math.max(L.topoMin + r, z.y + (Math.random() - .5) * z.R)) };
+          if (!pos) { ok = false; break; }
+          colocados.push({ chave: `${g.pilar}|${g.rotulo}`, g, r, ...pos });
+        }
+        if (!ok) break;
+      }
+      if (ok) return { itens: colocados, total };
+      escala *= 0.88;
+    }
+  }
+  return { itens: [], total };
+}
+
+// ---------- renderização dos frutos ----------
+const frutosDom = new Map();
+let ultimoJson = '', dados = { grupos: [], total: 0, recentes: [], coleta_aberta: true };
+function renderizar(forcar = false) {
+  const { itens } = empacotar(dados.grupos);
+  const vivos = new Set();
+  for (const it of itens) {
+    vivos.add(it.chave);
+    const p = EVENTO.pilares[it.g.pilar - 1], cor = corDoPilar(p), txtCor = corTextoSobre(cor);
+    let o = frutosDom.get(it.chave);
+    const nome = cap(it.g.rotulo);
+    if (!o) {
+      const f = el('g', { class: 'f' }, gFrutos); f.style.transform = `translate(${it.x}px,${it.y}px)`;
+      const i = el('g', { class: 'i', filter: 'url(#sombra)' }, f); i.style.transform = 'scale(0)';
+      const c = el('circle', { r: 100, fill: `url(#g${p.id})` }, i);
+      const anel = el('circle', { r: 100, class: 'fruto-anel' }, i);
+      const t = el('text', { 'text-anchor': 'middle', 'font-weight': 800, fill: txtCor }, i);
+      const bf = el('g', { class: 'f' }, gBadges); bf.style.transform = `translate(${it.x + it.r * 0.7}px,${it.y - it.r * 0.7}px)`;
+      const bi = el('g', { class: 'i' }, bf); bi.style.transform = 'scale(0)';
+      const bc = el('circle', { r: 34, fill: '#06262C', stroke: cor, 'stroke-width': 6 }, bi); const bt = el('text', { y: 13, 'text-anchor': 'middle', 'font-size': 38, 'font-weight': 900, fill: '#fff' }, bi);
+      o = { f, i, c, t, bf, bi, bt, bc, n: 0, nome: '' }; frutosDom.set(it.chave, o);
+      requestAnimationFrame(() => requestAnimationFrame(() => { o.i.style.transform = `scale(${it.r / 100})`; o.bi.style.transform = `scale(${Math.max(it.r / 100, 0.42)})`; }));
+    } else {
+      o.f.style.transform = `translate(${it.x}px,${it.y}px)`;
+      o.i.style.transform = `scale(${it.r / 100})`;
+      o.bf.style.transform = `translate(${it.x + it.r * 0.7}px,${it.y - it.r * 0.7}px)`;
+      o.bi.style.transform = `scale(${Math.max(it.r / 100, 0.42)})`;
+    }
+    if (o.nome !== nome || forcar) {
+      o.t.textContent = nome; const fs = Math.min(46, 155 / (Math.max(nome.length, 3) * 0.56)); o.t.setAttribute('font-size', fs); o.t.setAttribute('y', fs * 0.34);
+    }
+    o.c.setAttribute('fill', `url(#g${p.id})`); o.t.setAttribute('fill', txtCor); o.bc.setAttribute('stroke', cor);
+    o.bf.style.display = it.g.n > 1 ? '' : 'none'; o.bt.textContent = `×${it.g.n}`; if (it.g.n > 99) o.bt.setAttribute('font-size', 30);
+    if (!forcar && o.n && it.g.n > o.n) { o.f.classList.remove('pulso'); void o.f.getBoundingClientRect(); o.f.classList.add('pulso'); }
+    o.n = it.g.n; o.nome = nome;
+  }
+  for (const [k, o] of frutosDom) if (!vivos.has(k)) { o.i.style.transform = 'scale(0)'; o.bi.style.transform = 'scale(0)'; const f = o.f, bf = o.bf; frutosDom.delete(k); setTimeout(() => { f.remove(); bf.remove(); }, 900); }
+
+  // raízes e contadores por pilar
+  const tot = dados.total || 0;
+  EVENTO.pilares.forEach((p, idx) => {
+    const n = dados.grupos.filter((g) => g.pilar === p.id).reduce((s, g) => s + g.n, 0);
+    rootEls[idx].setAttribute('stroke-width', 8 + (tot ? (n / tot) * 46 : 0));
+    if (rotuloEls[idx]) rotuloEls[idx].cn.textContent = n;
+  });
+  animarTotal(tot);
+  $('#vazio').style.opacity = tot ? 0 : 1;
+  $('#encerrada').style.display = dados.coleta_aberta === false ? 'block' : 'none';
+}
+let totalMostrado = 0;
+function animarTotal(alvo) {
+  const el = $('#total'); if (alvo === totalMostrado) return;
+  const ini = totalMostrado, t0 = performance.now();
+  const passo = (t) => { const k = Math.min(1, (t - t0) / 700); totalMostrado = Math.round(ini + (alvo - ini) * k); el.textContent = totalMostrado; if (k < 1) requestAnimationFrame(passo); else el.textContent = alvo; };
+  requestAnimationFrame(passo);
+}
+
+// ---------- aviso de novo compromisso (usa a pílula do topo) ----------
+const vistos = new Set(); let primeira = true, fila = [], mostrando = false;
+function anunciar(recentes) {
+  if (primeira) { recentes.forEach((r) => vistos.add(r.id)); primeira = false; return; }
+  for (const r of recentes) if (!vistos.has(r.id)) { vistos.add(r.id); fila.push(r); }
+  if (!mostrando) proximo();
+}
+function proximo() {
+  const r = fila.shift(); if (!r) { mostrando = false; return; }
+  mostrando = true; const p = EVENTO.pilares[r.pilar - 1], cor = corDoPilar(p), sel = $('#sel');
+  sel.textContent = `NOVO · ${cap(r.rotulo)} · ${p.curto}`; sel.style.background = cor; sel.style.color = corTextoSobre(cor); sel.classList.add('novo');
+  setTimeout(() => {
+    sel.classList.remove('novo'); sel.textContent = `${EVENTO.mote} · ${EVENTO.dataTexto}`; sel.style.background = ''; sel.style.color = '';
+    setTimeout(proximo, 350);
+  }, fila.length > 3 ? 900 : 2200);
+}
+
+// ---------- dados ----------
+function aplicar(d) {
+  const json = JSON.stringify([d.grupos, d.total, d.coleta_aberta]);
+  dados = d; anunciar(d.recentes || []);
+  if (json !== ultimoJson) { ultimoJson = json; renderizar(); }
+}
+let falhas = 0;
+function status(ok) { $('#status').classList.toggle('off', !ok); $('#status-txt').textContent = ok ? (DEMO ? 'demonstração' : 'ao vivo') : 'reconectando…'; }
+async function buscar() {
+  try {
+    const r = await fetch('/api/respostas', { cache: 'no-store' });
+    if (!r.ok) throw new Error(r.status);
+    aplicar(await r.json()); falhas = 0; status(true);
+  } catch { falhas++; status(false); }
+}
+function agendar() {
+  const espera = document.hidden ? 10000 : (falhas > 2 ? Math.min(INTERVALO * 2, 8000) : INTERVALO);
+  setTimeout(async () => { await buscar(); agendar(); }, espera);
+}
+
+// ---------- modo demonstração ----------
+const VERBOS = {
+  1: ['escutar', 'escutando', 'reconhecer', 'desenvolver', 'orientar', 'mentorar', 'inspirar', 'valorizar', 'escuto', 'acolher', 'treinar', 'elogiar', 'escutra'],
+  2: ['simplificar', 'digitalizar', 'documentar', 'automatizar', 'simplifico', 'padronizar', 'agilizar', 'medir', 'compartilhar', 'aprender'],
+  3: ['poupar', 'planejar', 'cuidar', 'economizar', 'planejo', 'integralizar', 'otimizar', 'priorizar'],
+  4: ['atender', 'encantar', 'ouvir', 'resolver', 'atendo', 'orientar', 'surpreender', 'fidelizar', 'acompanhar', 'atendendo', 'cuidar'],
+  5: ['educar', 'incluir', 'apoiar', 'participar', 'educar', 'integrar', 'cooperar', 'ensinar', 'conectar', 'engajar', 'multiplicar'],
+};
+const PESOS = [26, 17, 17, 24, 16];
+let demoLinhas = [], demoId = 0;
+function sorteio() { let x = Math.random() * 100, i = 0; while (i < 4 && x > PESOS[i]) { x -= PESOS[i]; i++; } return i + 1; }
+function demoAdicionar() {
+  const pilar = sorteio(); const lista = VERBOS[pilar]; const exib = lista[Math.floor(Math.random() ** 1.6 * lista.length)];
+  demoLinhas.push({ id: ++demoId, pilar, exib, chave: exib.normalize('NFD').replace(/[̀-ͯ]/g, '') });
+}
+function demoDados() {
+  const mapa = new Map();
+  for (const l of demoLinhas) { const k = `${l.pilar}|${l.chave}|${l.exib}`; if (!mapa.has(k)) mapa.set(k, { pilar: l.pilar, chave: l.chave, exib: l.exib, n: 0 }); mapa.get(k).n++; }
+  const grupos = agrupar([...mapa.values()]).map((g) => ({ pilar: g.pilar, rotulo: g.rotulo, n: g.n }));
+  return { coleta_aberta: true, total: demoLinhas.length, grupos, recentes: demoLinhas.slice(-6).map((l) => ({ id: l.id, pilar: l.pilar, rotulo: l.exib })) };
+}
+function iniciarDemo() {
+  const inicial = Number(P.get('demo')) || 30; for (let i = 0; i < inicial; i++) demoAdicionar();
+  aplicar(demoDados()); status(true);
+  const ritmo = Number(P.get('ritmo')) || 900;
+  setInterval(() => { const k = 1 + Math.floor(Math.random() * 3); for (let i = 0; i < k; i++) demoAdicionar(); aplicar(demoDados()); }, ritmo);
+}
+
+
+// ---------- PNG da árvore (imagem final para deck e comunicação) ----------
+const PROPS = ['fill', 'fill-opacity', 'stroke', 'stroke-width', 'stroke-opacity', 'stroke-linecap', 'stroke-dasharray', 'opacity', 'font-weight', 'font-family', 'letter-spacing', 'text-anchor', 'transform', 'filter', 'display'];
+function carregarImagem(src) { return new Promise((ok, erro) => { const i = new Image(); i.onload = () => ok(i); i.onerror = erro; i.src = src; }); }
+async function baixarPNG() {
+  const cw = 1920, ch = Math.round(1920 * H / W), k = cw / W;
+  const clone = svg.cloneNode(true);
+  const vivo = [svg, ...svg.querySelectorAll('*')], copia = [clone, ...clone.querySelectorAll('*')];
+  const raiz = getComputedStyle(document.body);
+  vivo.forEach((v, i) => {
+    const c = copia[i], cs = getComputedStyle(v);
+    for (const p of PROPS) { const val = cs.getPropertyValue(p); if (val && !(p === 'transform' && val === 'none')) c.style.setProperty(p, val); }
+    for (const a of ['fill', 'stroke', 'stop-color']) { const val = c.getAttribute(a); if (val && val.includes('var(')) c.setAttribute(a, raiz.getPropertyValue(val.slice(4, -1).trim()).trim()); }
+    if (c.tagName === 'stop') { const sc = c.getAttribute('stop-color'); if (sc && sc.includes('var(')) c.setAttribute('stop-color', raiz.getPropertyValue(sc.slice(4, -1).trim()).trim()); }
+  });
+  clone.setAttribute('xmlns', SVGNS); clone.setAttribute('width', cw); clone.setAttribute('height', ch); clone.removeAttribute('style');
+  const cv = document.createElement('canvas'); cv.width = cw; cv.height = ch; const g = cv.getContext('2d');
+  const bg = g.createRadialGradient(cw / 2, 0, 0, cw / 2, 0, cw * 0.75);
+  bg.addColorStop(0, raiz.getPropertyValue('--bg1').trim()); bg.addColorStop(1, raiz.getPropertyValue('--bg2').trim());
+  g.fillStyle = bg; g.fillRect(0, 0, cw, ch);
+  const arvore = await carregarImagem('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(clone)));
+  g.drawImage(arvore, 0, 0, cw, ch);
+  // cabeçalho: logo, pergunta e total
+  const logo = await carregarImagem($('#logo-img').src); const lh = ch * 0.09;
+  g.drawImage(logo, ch * 0.03, ch * 0.026, lh * logo.width / logo.height, lh);
+  const txt = raiz.getPropertyValue('--txt').trim(), suave = raiz.getPropertyValue('--suave').trim();
+  g.textAlign = 'center'; g.fillStyle = txt; g.font = `800 ${ch * 0.037}px "Source Sans 3", system-ui, sans-serif`;
+  const pal = EVENTO.pergunta.split(' '); let l1 = '', l2 = ''; for (const w of pal) { if (g.measureText(l1 + ' ' + w).width < cw * 0.36 && !l2) l1 = (l1 + ' ' + w).trim(); else l2 = (l2 + ' ' + w).trim(); }
+  g.fillText(l1, cw / 2, ch * 0.083); g.fillText(l2, cw / 2, ch * 0.083 + ch * 0.042);
+  g.textAlign = 'left'; g.fillStyle = txt; g.font = `900 ${ch * 0.085}px "Source Sans 3", system-ui, sans-serif`; g.fillText(String(dados.total || 0), ch * 0.03, ch * 0.215);
+  g.fillStyle = suave; g.font = `600 ${ch * 0.022}px "Source Sans 3", system-ui, sans-serif`; g.fillText('compromissos', ch * 0.032, ch * 0.24);
+  g.textAlign = 'right'; g.fillText(`${EVENTO.mote} · ${EVENTO.dataTexto}`, cw - ch * 0.03, ch * 0.04);
+  cv.toBlob((blob) => { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `arvore-avanca-cooplivre-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-')}.png`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 3000); }, 'image/png');
+}
+
+// ---------- controles e atalhos ----------
+function telaCheia() { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen?.(); }
+function alternarTema() { tema = tema === 'escuro' ? 'claro' : 'escuro'; aplicarTema(); }
+function alternarQR() { $('#qrgrande').classList.toggle('on'); }
+addEventListener('keydown', (e) => {
+  const k = e.key.toLowerCase();
+  if (k === 'f') telaCheia(); else if (k === 'p') baixarPNG(); else if (k === 't') alternarTema(); else if (k === 'q') alternarQR(); else if (k === 'escape') $('#qrgrande').classList.remove('on');
+});
+$('#b-png').onclick = baixarPNG; $('#b-full').onclick = telaCheia; $('#b-tema').onclick = alternarTema; $('#b-qr').onclick = alternarQR; $('#qrgrande').onclick = alternarQR;
+let ocioso; function acordar() { document.body.classList.remove('quieto'); clearTimeout(ocioso); ocioso = setTimeout(() => document.body.classList.add('quieto'), 2500); }
+addEventListener('mousemove', acordar); addEventListener('mousedown', acordar); acordar();
+let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { desenharCena(); renderizar(true); }, 150); });
+
+// ---------- início ----------
+aplicarTema(); desenharCena(); renderizar(true);
+if (DEMO) iniciarDemo(); else { buscar().then(agendar); }
+window.__telao = { aplicar, get dados() { return dados; } };
+</script>
+</body>
+</html>

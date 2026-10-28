@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin · Avança Cooplivre 27–30</title>
+<link rel="icon" href="assets/logos/avanca-roxo.png">
+<style>
+  :root{--petroleo:#00353E;--teal:#0EAF9E;--lima:#C6E03A;--roxo:#4B3C91;--fundo:#F2F6F5;--linha:#D6E0DF;--suave:#5A7076;--erro:#B3261E;--ok:#0A7F73}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fundo);color:#0B2A30;font-family:"Source Sans 3","Source Sans Pro",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:15px}
+  header{background:var(--petroleo);color:#fff;display:flex;align-items:center;gap:16px;padding:10px 20px;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+  header img{height:38px}
+  header h1{font-size:17px;margin:0;font-weight:700;flex:1;min-width:180px}
+  header a{color:#C6E03A;text-decoration:none;font-weight:700;font-size:14px;border:1px solid rgba(198,224,58,.5);padding:6px 12px;border-radius:999px}
+  main{max-width:1280px;margin:0 auto;padding:18px 20px 60px}
+  #login{max-width:360px;margin:12vh auto;background:#fff;border-radius:18px;padding:28px;box-shadow:0 8px 30px rgba(0,53,62,.12);text-align:center}
+  #login img{height:54px;margin-bottom:12px}
+  input,select,button,textarea{font:inherit}
+  input[type=text],input[type=password],input[type=search],select{height:42px;border:1.5px solid var(--linha);border-radius:10px;padding:0 12px;background:#fff;color:inherit;width:100%}
+  input:focus,select:focus{outline:2px solid var(--teal);border-color:var(--teal)}
+  .btn{appearance:none;border:0;border-radius:10px;height:40px;padding:0 16px;font-weight:700;cursor:pointer;background:var(--petroleo);color:#fff;white-space:nowrap}
+  .btn.sec{background:#fff;color:var(--petroleo);border:1.5px solid var(--petroleo)}
+  .btn.verde{background:var(--ok)} .btn.perigo{background:var(--erro)} .btn.mini{height:30px;padding:0 10px;font-size:13px;border-radius:8px}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+  .card{background:#fff;border-radius:14px;padding:14px 16px;border:1px solid var(--linha)}
+  .card .v{font-size:32px;font-weight:900;line-height:1} .card .l{color:var(--suave);font-size:13px;margin-top:4px;font-weight:600}
+  .card.estado .v{font-size:20px}
+  .barras{background:#fff;border:1px solid var(--linha);border-radius:14px;padding:14px 16px;margin-bottom:16px}
+  .barras h3{margin:0 0 10px;font-size:14px;color:var(--suave);letter-spacing:.06em;text-transform:uppercase}
+  .barra{display:grid;grid-template-columns:210px 1fr 48px;align-items:center;gap:10px;margin:6px 0;font-size:14px;font-weight:600}
+  .barra .trilho{height:18px;background:#EAF0EF;border-radius:9px;overflow:hidden}
+  .barra .cheio{height:100%;border-radius:9px;transition:width .4s}
+  .barra .n{text-align:right;font-variant-numeric:tabular-nums}
+  .abas{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap;align-items:center}
+  .aba{appearance:none;border:0;background:transparent;padding:10px 16px;border-radius:10px 10px 0 0;font-weight:700;cursor:pointer;color:var(--suave);border-bottom:3px solid transparent}
+  .aba[aria-selected=true]{color:var(--petroleo);border-bottom-color:var(--teal);background:#fff}
+  .acoes{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+  .filtros{display:grid;grid-template-columns:2fr 1.2fr 1.2fr 1.2fr auto;gap:8px;margin-bottom:10px}
+  .tabela{background:#fff;border:1px solid var(--linha);border-radius:14px;overflow:auto;max-height:62vh}
+  table{border-collapse:collapse;width:100%}
+  th{position:sticky;top:0;background:#F7FAF9;text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--suave);padding:9px 10px;border-bottom:1px solid var(--linha);z-index:1}
+  td{padding:7px 10px;border-bottom:1px solid #EEF3F2;vertical-align:middle}
+  tr.oculto td{opacity:.55} tr.bloqueado td{background:#FFF4F3}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px}
+  .pill i{width:12px;height:12px;border-radius:50%;display:inline-block}
+  .tag{font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;background:#E3F3F0;color:var(--ok)}
+  .tag.oculto{background:#EEE;color:#555} .tag.bloqueado{background:#FBE0DD;color:var(--erro)}
+  td input[type=text]{height:34px} td select{height:34px}
+  .grupo{display:grid;grid-template-columns:28px 1.1fr 60px 2fr auto;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid #EEF3F2}
+  .grupo .membros{color:var(--suave);font-size:13.5px}
+  .vazio{padding:28px;text-align:center;color:var(--suave)}
+  .painel{background:#fff;border:1px solid var(--linha);border-radius:14px;padding:18px;margin-bottom:14px}
+  .painel h3{margin:0 0 6px} .painel p{margin:0 0 12px;color:var(--suave)}
+  .msg{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--petroleo);color:#fff;padding:10px 18px;border-radius:12px;font-weight:700;z-index:30;display:none}
+  .msg.on{display:block} .msg.erro{background:var(--erro)}
+  [hidden]{display:none!important}
+  @media (max-width:820px){.filtros{grid-template-columns:1fr 1fr}.barra{grid-template-columns:130px 1fr 40px}.grupo{grid-template-columns:24px 1fr 50px}.grupo .membros,.grupo .gac{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<section id="login">
+  <img src="assets/logos/avanca-cooplivre-escuro.png" alt="Avança Cooplivre">
+  <h2 style="margin:0 0 4px">Painel de moderação</h2>
+  <p style="color:#5A7076;margin:0 0 16px">Digite a senha da equipe.</p>
+  <input type="password" id="senha" placeholder="Senha" autocomplete="current-password" aria-label="Senha">
+  <p id="login-erro" style="color:#B3261E;font-weight:700;min-height:20px;margin:10px 0"></p>
+  <button class="btn" id="entrar" style="width:100%;height:46px">Entrar</button>
+</section>
+
+<div id="app" hidden>
+<header>
+  <img src="assets/logos/avanca-cooplivre-branco.png" alt="">
+  <h1>Moderação · Árvore do Legado e Futuro</h1>
+  <a href="/telao" target="_blank" rel="noopener">Abrir telão ↗</a>
+  <a href="/" target="_blank" rel="noopener">Abrir formulário ↗</a>
+  <a href="/relatorio" target="_blank" rel="noopener">Relatório ↗</a>
+</header>
+<main>
+  <div class="cards" id="cards"></div>
+  <div class="barras" id="barras"></div>
+
+  <div class="abas" role="tablist">
+    <button class="aba" role="tab" aria-selected="true" data-aba="respostas">Respostas</button>
+    <button class="aba" role="tab" aria-selected="false" data-aba="agrupado">Agrupado</button>
+    <button class="aba" role="tab" aria-selected="false" data-aba="ajustes">Ajustes</button>
+    <div class="acoes">
+      <button class="btn verde" id="b-coleta"></button>
+      <button class="btn sec" id="b-csv">Exportar CSV</button>
+    </div>
+  </div>
+
+  <!-- RESPOSTAS -->
+  <section id="aba-respostas">
+    <div class="filtros">
+      <input type="search" id="f-busca" placeholder="Buscar verbo…" aria-label="Buscar">
+      <select id="f-pilar" aria-label="Pilar"></select>
+      <select id="f-status" aria-label="Status">
+        <option value="">Todos os status</option><option value="visivel">Visíveis</option><option value="oculto">Ocultas</option><option value="bloqueado">Bloqueadas (filtro)</option>
+      </select>
+      <select id="f-area" aria-label="Área"></select>
+      <button class="btn sec" id="b-limpar">Limpar</button>
+    </div>
+    <div style="display:flex;gap:8px;margin:0 0 8px;align-items:center;flex-wrap:wrap">
+      <span id="sel-info" style="color:#5A7076;font-weight:600">Nenhuma selecionada</span>
+      <button class="btn mini sec" data-lote="ocultar">Ocultar</button>
+      <button class="btn mini sec" data-lote="mostrar">Mostrar</button>
+      <button class="btn mini perigo" data-lote="apagar">Apagar</button>
+    </div>
+    <div class="tabela"><table><thead><tr>
+      <th style="width:34px"><input type="checkbox" id="sel-todas" aria-label="Selecionar todas"></th>
+      <th>#</th><th>Hora</th><th>Pilar</th><th>Verbo (original)</th><th>Agrupado como</th><th>Área</th><th>Status</th><th>Ações</th>
+    </tr></thead><tbody id="linhas"></tbody></table></div>
+  </section>
+
+  <!-- AGRUPADO -->
+  <section id="aba-agrupado" hidden>
+    <div class="painel" style="padding:12px 16px"><p style="margin:0">O sistema já junta flexões (escuta, escuto, escutando → <b>escutar</b>) e erros de digitação. Use <b>Renomear</b> para mudar o texto do fruto e <b>Unir em…</b> para juntar o que sobrar manualmente.</p></div>
+    <div class="tabela" id="grupos"></div>
+  </section>
+
+  <!-- AJUSTES -->
+  <section id="aba-ajustes" hidden>
+    <div class="painel">
+      <h3>Coleta</h3><p>Com a coleta encerrada, o celular mostra a tela de agradecimento e novos envios são recusados.</p>
+      <button class="btn verde" id="b-coleta2"></button>
+    </div>
+    <div class="painel">
+      <h3>Exportar</h3><p>CSV com texto original, verbo agrupado, pilar, diretoria e status. Separador ponto e vírgula, abre direto no Excel.</p>
+      <button class="btn sec" id="b-csv2">Baixar CSV</button>
+    </div>
+    <div class="painel" style="border-color:#E8B4AF">
+      <h3 style="color:#B3261E">Apagar tudo</h3><p>Remove todas as respostas e agrupamentos. Use depois do ensaio, antes do evento. Não tem como desfazer: exporte o CSV antes.</p>
+      <div style="display:flex;gap:8px;max-width:420px"><input type="text" id="apagar-conf" placeholder="Digite APAGAR para liberar" aria-label="Confirmação"><button class="btn perigo" id="b-apagar" disabled>Apagar tudo</button></div>
+    </div>
+  </section>
+</main>
+</div>
+<div class="msg" id="msg"></div>
+
+<script type="module">
+import { EVENTO } from './assets/evento.js';
+const $ = (s) => document.querySelector(s);
+const pilar = (id) => EVENTO.pilares.find((p) => p.id === Number(id));
+const areaNome = (id) => (EVENTO.areas.find((a) => a.id === id) || {}).nome || '';
+const cap = (s) => (s ? s[0].toUpperCase() + s.slice(1) : s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+let chave = ''; try { chave = sessionStorage.getItem('cl_admin') || ''; } catch {}
+let D = { respostas: [], grupos: [], overrides: [], coleta_aberta: true };
+let editando = false, selecionadas = new Set(), abaAtual = 'respostas';
+
+function aviso(t, erro) { const m = $('#msg'); m.textContent = t; m.className = 'msg on' + (erro ? ' erro' : ''); clearTimeout(aviso.t); aviso.t = setTimeout(() => (m.className = 'msg'), 2600); }
+async function api(corpo) {
+  const r = await fetch('/api/admin', { method: corpo ? 'POST' : 'GET', headers: { 'x-admin-key': chave, ...(corpo ? { 'Content-Type': 'application/json' } : {}) }, body: corpo ? JSON.stringify(corpo) : undefined, cache: 'no-store' });
+  if (r.status === 401) { sair(); throw new Error('Senha incorreta'); }
+  const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.mensagem || j.erro || 'Erro'); return j;
+}
+function sair() { try { sessionStorage.removeItem('cl_admin'); } catch {} chave = ''; $('#app').hidden = true; $('#login').hidden = false; }
+async function entrar() {
+  chave = $('#senha').value || chave; $('#login-erro').textContent = '';
+  try { D = await api(); try { sessionStorage.setItem('cl_admin', chave); } catch {} $('#login').hidden = true; $('#app').hidden = false; desenhar(); }
+  catch (e) { $('#login-erro').textContent = e.message === 'Senha incorreta' ? 'Senha incorreta.' : e.message; }
+}
+$('#entrar').onclick = entrar; $('#senha').addEventListener('keydown', (e) => e.key === 'Enter' && entrar());
+
+// ---------- filtros ----------
+$('#f-pilar').innerHTML = '<option value="">Todos os pilares</option>' + EVENTO.pilares.map((p) => `<option value="${p.id}">${p.id} · ${esc(p.nome)}</option>`).join('');
+$('#f-area').innerHTML = '<option value="">Todas as áreas</option><option value="_sem">Sem área</option>' + EVENTO.areas.map((a) => `<option value="${a.id}">${esc(a.nome)}</option>`).join('');
+['#f-busca', '#f-pilar', '#f-status', '#f-area'].forEach((s) => $(s).addEventListener('input', desenharLinhas));
+$('#b-limpar').onclick = () => { $('#f-busca').value = ''; $('#f-pilar').value = ''; $('#f-status').value = ''; $('#f-area').value = ''; desenharLinhas(); };
+
+// ---------- desenho ----------
+function desenhar() { desenharCards(); desenharLinhas(); desenharGrupos(); $('#b-coleta').textContent = $('#b-coleta2').textContent = D.coleta_aberta ? 'Encerrar coleta' : 'Reabrir coleta'; }
+function desenharCards() {
+  const r = D.respostas, vis = r.filter((x) => x.status === 'visivel'), oc = r.filter((x) => x.status === 'oculto'), bl = r.filter((x) => x.status === 'bloqueado');
+  $('#cards').innerHTML = `
+    <div class="card"><div class="v">${vis.length}</div><div class="l">no telão</div></div>
+    <div class="card"><div class="v">${new Set(D.grupos.map((g) => g.pilar + g.chave)).size}</div><div class="l">frutos (verbos agrupados)</div></div>
+    <div class="card"><div class="v">${oc.length}</div><div class="l">ocultas</div></div>
+    <div class="card"><div class="v" style="color:${bl.length ? '#B3261E' : 'inherit'}">${bl.length}</div><div class="l">bloqueadas pelo filtro</div></div>
+    <div class="card estado"><div class="v" style="color:${D.coleta_aberta ? '#0A7F73' : '#B3261E'}">${D.coleta_aberta ? 'Aberta' : 'Encerrada'}</div><div class="l">coleta</div></div>`;
+  const max = Math.max(1, ...EVENTO.pilares.map((p) => vis.filter((x) => x.pilar === p.id).length));
+  $('#barras').innerHTML = '<h3>Compromissos por pilar</h3>' + EVENTO.pilares.map((p) => { const n = vis.filter((x) => x.pilar === p.id).length; return `<div class="barra"><span>${p.id} · ${esc(p.nome)}</span><div class="trilho"><div class="cheio" style="width:${(n / max) * 100}%;background:${p.corTelao}"></div></div><span class="n">${n}</span></div>`; }).join('');
+}
+function filtradas() {
+  const q = $('#f-busca').value.trim().toLowerCase(), fp = $('#f-pilar').value, fs = $('#f-status').value, fa = $('#f-area').value;
+  return D.respostas.filter((r) => (!q || r.original.toLowerCase().includes(q) || r.verbo.includes(q) || r.grupo.toLowerCase().includes(q)) && (!fp || r.pilar === Number(fp)) && (!fs || r.status === fs) && (!fa || (fa === '_sem' ? !r.area : r.area === fa)));
+}
+function desenharLinhas() {
+  if (editando) return;
+  const lista = filtradas();
+  const hora = (iso) => new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  $('#linhas').innerHTML = lista.length ? lista.map((r) => {
+    const p = pilar(r.pilar);
+    return `<tr class="${r.status}" data-id="${r.id}">
+      <td><input type="checkbox" class="sel" ${selecionadas.has(r.id) ? 'checked' : ''} aria-label="Selecionar ${r.id}"></td>
+      <td>${r.id}</td><td>${hora(r.criado_em)}</td>
+      <td><span class="pill"><i style="background:${p.corTelao}"></i>${p.id} · ${esc(p.curto)}</span></td>
+      <td>${esc(r.original)}</td><td>${esc(cap(r.grupo)) || '<span style="color:#999">—</span>'}</td>
+      <td>${esc(areaNome(r.area)) || '<span style="color:#999">—</span>'}</td>
+      <td><span class="tag ${r.status}">${{ visivel: 'visível', oculto: 'oculta', bloqueado: 'bloqueada' }[r.status]}</span></td>
+      <td style="white-space:nowrap">
+        ${r.status === 'visivel' ? '<button class="btn mini sec" data-a="ocultar">Ocultar</button>' : (r.status === 'bloqueado' ? '<button class="btn mini verde" data-a="liberar">Liberar</button>' : '<button class="btn mini verde" data-a="mostrar">Mostrar</button>')}
+        <button class="btn mini sec" data-a="editar">Editar</button>
+        <button class="btn mini perigo" data-a="apagar">Apagar</button></td></tr>`;
+  }).join('') : '<tr><td colspan="9" class="vazio">Nenhuma resposta com esses filtros.</td></tr>';
+  $('#sel-info').textContent = selecionadas.size ? `${selecionadas.size} selecionada(s)` : 'Nenhuma selecionada';
+}
+function desenharGrupos() {
+  if (editando) return;
+  const ovmap = new Map(D.overrides.map((o) => [o.chave, o]));
+  $('#grupos').innerHTML = D.grupos.length ? D.grupos.map((g, i) => {
+    const p = pilar(g.pilar);
+    const uniao = g.membros.filter((m) => m !== g.chave && ovmap.get(m)?.destino).map((m) => `<button class="btn mini sec" data-desunir="${esc(m)}" title="Separar">✕ ${esc(m)}</button>`).join(' ');
+    return `<div class="grupo" data-i="${i}">
+      <span class="pill"><i style="background:${p.corTelao}"></i></span>
+      <div><b style="font-size:17px">${esc(cap(g.rotulo))}</b> <span style="color:#5A7076;font-size:13px">· ${esc(p.curto)}</span></div>
+      <div style="font-weight:900;font-size:18px;text-align:right">×${g.n}</div>
+      <div class="membros">${g.membros.length > 1 ? 'Junta: ' + esc(g.membros.join(', ')) : 'sem variações'} ${uniao}</div>
+      <div class="gac" style="white-space:nowrap"><button class="btn mini sec" data-ren="${i}">Renomear</button> <button class="btn mini sec" data-uni="${i}">Unir em…</button></div></div>`;
+  }).join('') : '<div class="vazio">Ainda não há verbos agrupados.</div>';
+}
+
+// ---------- ações ----------
+async function agir(corpo, ok) { try { await api(corpo); D = await api(); desenhar(); if (ok) aviso(ok); } catch (e) { aviso(e.message, true); } }
+$('#linhas').addEventListener('click', async (e) => {
+  const tr = e.target.closest('tr'); if (!tr) return; const id = Number(tr.dataset.id);
+  if (e.target.classList.contains('sel')) { e.target.checked ? selecionadas.add(id) : selecionadas.delete(id); $('#sel-info').textContent = selecionadas.size ? `${selecionadas.size} selecionada(s)` : 'Nenhuma selecionada'; return; }
+  const a = e.target.dataset.a; if (!a) return;
+  if (a === 'apagar') { if (!confirm('Apagar esta resposta?')) return; return agir({ acao: 'apagar', ids: [id] }, 'Apagada'); }
+  if (a === 'editar') return abrirEdicao(tr, id);
+  if (a === 'salvar') {
+    const verbo = tr.querySelector('.e-verbo').value, pil = Number(tr.querySelector('.e-pilar').value);
+    editando = false; return agir({ acao: 'editar', id, verbo, pilar: pil }, 'Salva');
+  }
+  if (a === 'cancelar') { editando = false; return desenharLinhas(); }
+  agir({ acao: a, ids: [id] }, { ocultar: 'Oculta do telão', mostrar: 'Visível no telão', liberar: 'Liberada' }[a]);
+});
+function abrirEdicao(tr, id) {
+  editando = true; const r = D.respostas.find((x) => x.id === id);
+  tr.children[3].innerHTML = `<select class="e-pilar">${EVENTO.pilares.map((p) => `<option value="${p.id}" ${p.id === r.pilar ? 'selected' : ''}>${p.id} · ${esc(p.curto)}</option>`).join('')}</select>`;
+  tr.children[4].innerHTML = `<input type="text" class="e-verbo" value="${esc(r.original)}" maxlength="40">`;
+  tr.children[8].innerHTML = '<button class="btn mini verde" data-a="salvar">Salvar</button> <button class="btn mini sec" data-a="cancelar">Cancelar</button>';
+  tr.querySelector('.e-verbo').focus();
+}
+$('#sel-todas').addEventListener('change', (e) => { filtradas().forEach((r) => (e.target.checked ? selecionadas.add(r.id) : selecionadas.delete(r.id))); desenharLinhas(); });
+document.querySelectorAll('[data-lote]').forEach((b) => b.addEventListener('click', () => {
+  if (!selecionadas.size) return aviso('Selecione ao menos uma resposta', true);
+  const a = b.dataset.lote; if (a === 'apagar' && !confirm(`Apagar ${selecionadas.size} resposta(s)?`)) return;
+  const ids = [...selecionadas]; selecionadas.clear(); agir({ acao: a, ids }, 'Feito');
+}));
+$('#grupos').addEventListener('click', (e) => {
+  const t = e.target;
+  if (t.dataset.ren !== undefined) { const g = D.grupos[t.dataset.ren]; const novo = prompt('Novo texto do fruto:', cap(g.rotulo)); if (novo && novo.trim()) agir({ acao: 'renomear', chave: g.chave, rotulo: novo.trim().toLowerCase() }, 'Renomeado'); }
+  if (t.dataset.uni !== undefined) {
+    const g = D.grupos[t.dataset.uni]; const mesmos = D.grupos.filter((x) => x.pilar === g.pilar && x.chave !== g.chave);
+    if (!mesmos.length) return aviso('Não há outro verbo neste pilar', true);
+    const op = mesmos.map((x, k) => `${k + 1}) ${cap(x.rotulo)} (×${x.n})`).join('\n');
+    const r = prompt(`Unir "${cap(g.rotulo)}" em qual verbo? Digite o número:\n\n${op}`); const k = Number(r) - 1;
+    if (mesmos[k]) agir({ acao: 'unir', de: g.membros, para: mesmos[k].chave }, 'Unido');
+  }
+  if (t.dataset.desunir) agir({ acao: 'desunir', chave: t.dataset.desunir }, 'Separado');
+});
+const alternarColeta = () => agir({ acao: 'coleta', aberta: !D.coleta_aberta }, D.coleta_aberta ? 'Coleta encerrada' : 'Coleta reaberta');
+$('#b-coleta').onclick = $('#b-coleta2').onclick = alternarColeta;
+$('#apagar-conf').addEventListener('input', (e) => ($('#b-apagar').disabled = e.target.value !== 'APAGAR'));
+$('#b-apagar').onclick = () => agir({ acao: 'apagar_tudo', confirmacao: 'APAGAR' }, 'Tudo apagado').then(() => { $('#apagar-conf').value = ''; $('#b-apagar').disabled = true; selecionadas.clear(); });
+
+// ---------- CSV ----------
+function baixarCSV() {
+  const cab = ['id', 'data_hora', 'pilar_n', 'pilar', 'verbo_original', 'verbo', 'verbo_agrupado', 'diretoria', 'status'];
+  const q = (v) => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+  const linhas = D.respostas.slice().sort((a, b) => a.id - b.id).map((r) => [r.id, new Date(r.criado_em).toLocaleString('pt-BR'), r.pilar, pilar(r.pilar).nome, r.original, r.verbo, r.grupo, areaNome(r.area), r.status].map(q).join(';'));
+  const blob = new Blob(['﻿' + cab.join(';') + '\r\n' + linhas.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `avanca-cooplivre-compromissos-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-')}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+$('#b-csv').onclick = $('#b-csv2').onclick = baixarCSV;
+
+// ---------- abas e auto-atualização ----------
+document.querySelectorAll('.aba').forEach((b) => b.addEventListener('click', () => {
+  abaAtual = b.dataset.aba; document.querySelectorAll('.aba').forEach((x) => x.setAttribute('aria-selected', x === b));
+  ['respostas', 'agrupado', 'ajustes'].forEach((n) => ($('#aba-' + n).hidden = n !== abaAtual));
+}));
+setInterval(async () => {
+  if (!chave || $('#app').hidden || editando || document.hidden) return;
+  const foco = document.activeElement; if (foco && ['INPUT', 'SELECT'].includes(foco.tagName) && foco.closest('#linhas')) return;
+  try { D = await api(); desenharCards(); desenharLinhas(); desenharGrupos(); $('#b-coleta').textContent = $('#b-coleta2').textContent = D.coleta_aberta ? 'Encerrar coleta' : 'Reabrir coleta'; } catch {}
+}, 4000);
+if (chave) entrar();
+</script>
+</body>
+</html>

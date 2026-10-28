@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#00353E">
+<title>Avança Cooplivre 27–30 · Meu compromisso</title>
+<link rel="icon" href="assets/logos/avanca-roxo.png">
+<style>
+  :root{
+    --petroleo:#00353E; --teal:#0EAF9E; --lima:#C6E03A; --roxo:#4B3C91;
+    --fundo:#F4F7F6; --card:#FFFFFF; --texto:#0B2A30; --suave:#5A7076; --linha:#D8E2E1; --erro:#B3261E;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--fundo);color:var(--texto);
+    font-family:"Source Sans 3","Source Sans Pro",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:17px;line-height:1.35}
+  header{background:#fff;border-bottom:1px solid var(--linha);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;justify-content:space-between}
+  header img{height:46px;width:auto;display:block}
+  header .quando{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);text-align:right;font-weight:600}
+  main{max-width:560px;margin:0 auto;padding:18px 16px calc(28px + env(safe-area-inset-bottom))}
+  .pergunta{background:var(--petroleo);color:#fff;border-radius:18px;padding:20px 20px 22px;margin-bottom:20px;position:relative;overflow:hidden}
+  .pergunta:after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:var(--teal);opacity:.35}
+  .pergunta small{display:block;color:var(--lima);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:12px;margin-bottom:6px}
+  .pergunta h1{margin:0;font-size:24px;line-height:1.2;font-weight:700;position:relative;z-index:1}
+  .pergunta p{margin:8px 0 0;color:#CFE3E1;font-size:15px;position:relative;z-index:1}
+  .passo{margin:0 0 22px}
+  .passo>h2{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-size:18px;font-weight:700}
+  .passo>h2 .n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--petroleo);color:#fff;font-size:15px;display:grid;place-items:center}
+  .passo>h2 .op{font-weight:500;color:var(--suave);font-size:14px}
+  .pilares{display:grid;gap:10px}
+  .pilar{appearance:none;border:2px solid var(--linha);background:var(--card);border-radius:16px;padding:0;text-align:left;font:inherit;color:inherit;cursor:pointer;overflow:hidden;width:100%;transition:border-color .15s, box-shadow .15s}
+  .pilar .topo{display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:64px}
+  .pilar .num{flex:none;width:38px;height:38px;border-radius:12px;color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px}
+  .pilar .nome{font-weight:700;font-size:17px;line-height:1.15}
+  .pilar .sub{font-size:13.5px;color:var(--suave);margin-top:2px}
+  .pilar .ambicao{display:none;padding:0 14px 14px 64px;font-size:14.5px;color:#27474D}
+  .pilar .ambicao b{display:block;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px}
+  .pilar[aria-checked="true"]{box-shadow:0 0 0 3px rgba(14,175,158,.18)}
+  .pilar[aria-checked="true"] .ambicao{display:block}
+  .pilar:focus-visible,.area:focus-visible,button.enviar:focus-visible,input:focus-visible{outline:3px solid var(--roxo);outline-offset:2px}
+  .campo{position:relative}
+  input.verbo{width:100%;height:64px;border:2px solid var(--linha);border-radius:16px;padding:0 16px;font:inherit;font-size:24px;font-weight:600;color:var(--texto);background:#fff;text-transform:lowercase}
+  input.verbo:focus{border-color:var(--teal);outline:none;box-shadow:0 0 0 4px rgba(14,175,158,.18)}
+  .ajuda{display:flex;justify-content:space-between;gap:12px;margin-top:8px;font-size:14px;color:var(--suave);min-height:20px}
+  .dica{color:#6B5A00;background:#FBF6D4;border-radius:10px;padding:8px 12px;margin-top:8px;font-size:14.5px;display:none}
+  .dica.on{display:block}
+  .previa{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px 14px;background:#fff;border:1px dashed var(--linha);border-radius:14px;color:var(--suave);font-size:14px}
+  .fruto{flex:none;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:11px;text-align:center;line-height:1;padding:3px;background:#d8e2e1;color:#fff;overflow:hidden;transition:background .2s}
+  .areas{display:flex;flex-wrap:wrap;gap:8px}
+  .area{appearance:none;border:2px solid var(--linha);background:#fff;border-radius:999px;padding:0 16px;min-height:48px;font:inherit;font-size:15.5px;font-weight:600;color:var(--texto);cursor:pointer}
+  .area[aria-checked="true"]{border-color:var(--petroleo);background:var(--petroleo);color:#fff}
+  .lgpd{font-size:13.5px;color:var(--suave);margin:4px 0 18px;display:flex;gap:8px}
+  .lgpd svg{flex:none;margin-top:2px}
+  button.enviar{appearance:none;border:0;width:100%;min-height:64px;border-radius:18px;background:var(--teal);color:#00262C;font:inherit;font-weight:800;font-size:20px;cursor:pointer;box-shadow:0 6px 0 #0A7F73;transition:transform .08s, box-shadow .08s, opacity .2s}
+  button.enviar:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 #0A7F73}
+  button.enviar:disabled{background:#C9D6D5;color:#7C9094;box-shadow:0 6px 0 #AEBDBC;cursor:not-allowed}
+  .erro{color:var(--erro);font-weight:600;font-size:15px;margin:10px 0 0;display:none}
+  .erro.on{display:block}
+  .tela{display:none;text-align:center;padding:30px 8px}
+  .tela.on{display:block}
+  .tela .selo{width:96px;height:96px;border-radius:50%;background:var(--teal);margin:8px auto 18px;display:grid;place-items:center;animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+  .tela h2{font-size:28px;line-height:1.1;margin:0 0 10px}
+  .tela p{color:var(--suave);font-size:17px;margin:0 auto 22px;max-width:380px}
+  .tela .seuverbo{display:inline-block;padding:10px 22px;border-radius:999px;font-weight:800;font-size:22px;color:#fff;margin-bottom:18px}
+  button.sec{appearance:none;border:2px solid var(--petroleo);background:#fff;color:var(--petroleo);min-height:56px;padding:0 24px;border-radius:16px;font:inherit;font-weight:700;font-size:17px;cursor:pointer}
+  @keyframes pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+  [hidden]{display:none!important}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <img src="assets/logos/avanca-cooplivre-escuro.png" alt="Avança Cooplivre 27–30">
+  <div class="quando" id="quando"></div>
+</header>
+
+<main>
+  <!-- FORMULÁRIO -->
+  <section id="tela-form">
+    <div class="pergunta">
+      <small>Legado e Futuro</small>
+      <h1 id="pergunta"></h1>
+      <p id="instrucao"></p>
+    </div>
+
+    <div class="passo">
+      <h2><span class="n">1</span> Escolha o pilar</h2>
+      <div class="pilares" id="pilares" role="radiogroup" aria-label="Pilares do plano estratégico"></div>
+    </div>
+
+    <div class="passo">
+      <h2><span class="n">2</span> Escreva um verbo de ação</h2>
+      <div class="campo">
+        <input class="verbo" id="verbo" type="text" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="send" maxlength="24" placeholder="ex.: escutar" aria-label="Verbo de ação">
+      </div>
+      <div class="ajuda"><span id="ajuda-msg">Uma palavra só, que mostre o que você vai fazer.</span><span id="cont">0/20</span></div>
+      <div class="dica" id="dica"></div>
+      <div class="previa" id="previa">
+        <div class="fruto" id="fruto-previa">?</div>
+        <div>É assim que seu verbo vai aparecer no telão, como um fruto da árvore.</div>
+      </div>
+    </div>
+
+    <div class="passo">
+      <h2><span class="n">3</span> Sua área <span class="op">(opcional)</span></h2>
+      <div class="areas" id="areas" role="radiogroup" aria-label="Área"></div>
+    </div>
+
+    <div class="lgpd">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5A7076" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <span>Resposta anônima. Guardamos só o pilar, o verbo e, se você quiser, a diretoria. Nenhum nome ou dado pessoal.</span>
+    </div>
+
+    <button class="enviar" id="enviar" disabled>Enviar meu compromisso</button>
+    <p class="erro" id="erro" role="alert"></p>
+  </section>
+
+  <!-- SUCESSO -->
+  <section class="tela" id="tela-ok" aria-live="polite">
+    <div class="selo"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2>Compromisso enviado!</h2>
+    <div class="seuverbo" id="ok-verbo"></div>
+    <p>Olhe para o telão: seu verbo está virando um fruto da árvore. Cada compromisso ajuda a viver a ambição na prática.</p>
+    <button class="sec" id="outro">Enviar outro compromisso</button>
+    <p id="ok-limite" style="margin-top:14px"></p>
+  </section>
+
+  <!-- ENCERRADA -->
+  <section class="tela" id="tela-fim">
+    <h2>A coleta foi encerrada</h2>
+    <p>Obrigado por participar! Os compromissos de todos estão no telão e vão apoiar a execução do plano 2027–2030.</p>
+  </section>
+</main>
+
+<script type="module">
+import { EVENTO, corTextoSobre } from './assets/evento.js';
+
+const $ = (s) => document.querySelector(s);
+const guardar = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+const ler = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
+
+// Identificador anônimo do aparelho (só para limitar envios; não identifica ninguém)
+let aparelho = ler('cl_aparelho');
+if (!aparelho) { aparelho = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2)); guardar('cl_aparelho', aparelho); }
+let enviados = Number(ler('cl_enviados') || 0);
+
+const estado = { pilar: null, area: '', enviando: false, envioId: null };
+const verboEl = $('#verbo');
+
+$('#pergunta').textContent = EVENTO.pergunta;
+$('#instrucao').textContent = EVENTO.instrucao;
+$('#quando').innerHTML = `${EVENTO.dataTexto}<br>${EVENTO.mote}`;
+$('#cont').textContent = `0/${EVENTO.verboMax}`;
+verboEl.placeholder = 'ex.: ' + EVENTO.exemplosVerbo[Math.floor(Math.random() * EVENTO.exemplosVerbo.length)];
+
+// ---- pilares
+const boxPilares = $('#pilares');
+for (const p of EVENTO.pilares) {
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'pilar'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false'); b.dataset.id = p.id;
+  b.innerHTML = `<div class="topo"><div class="num" style="background:${p.cor}">${p.id}</div>
+      <div><div class="nome">${p.nome}</div><div class="sub">${p.sub}</div></div></div>
+    <div class="ambicao"><b style="color:${p.cor}">${p.ambicao ? 'Nossa ambição' : 'O que este pilar busca'}</b>${p.ambicao || p.desc}</div>`;
+  b.addEventListener('click', () => escolherPilar(p.id));
+  boxPilares.appendChild(b);
+}
+function escolherPilar(id) {
+  estado.pilar = id;
+  boxPilares.querySelectorAll('.pilar').forEach((el) => {
+    const on = Number(el.dataset.id) === id;
+    el.setAttribute('aria-checked', on);
+    el.style.borderColor = on ? EVENTO.pilares.find((p) => p.id === id).cor : '';
+  });
+  atualizar();
+  setTimeout(() => verboEl.scrollIntoView({ behavior: 'smooth', block: 'center' }), 120);
+}
+
+// ---- áreas (opcional)
+const boxAreas = $('#areas');
+[{ id: '', nome: 'Prefiro não informar' }, ...EVENTO.areas].forEach((a) => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'area'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', a.id === '' ? 'true' : 'false'); b.dataset.id = a.id; b.textContent = a.nome;
+  b.addEventListener('click', () => { estado.area = a.id; boxAreas.querySelectorAll('.area').forEach((x) => x.setAttribute('aria-checked', x === b)); });
+  boxAreas.appendChild(b);
+});
+
+// ---- verbo
+const semAcento = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '');
+const limpar = (t) => (t.trim().toLowerCase().split(/\s+/)[0] || '').replace(/[^a-záàâãéêíóôõúüç]/g, '');
+function validar() {
+  const v = limpar(verboEl.value);
+  return v.length >= EVENTO.verboMin && v.length <= EVENTO.verboMax ? v : '';
+}
+function atualizar() {
+  const v = limpar(verboEl.value);
+  $('#cont').textContent = `${v.length}/${EVENTO.verboMax}`;
+  const dica = $('#dica');
+  if (v && EVENTO.verbosGenericos.includes(semAcento(v))) {
+    dica.textContent = `"${v}" vale, mas dá para ser mais específico? Pense num verbo concreto, como ${EVENTO.exemplosVerbo.slice(0, 3).join(', ')}.`;
+    dica.classList.add('on');
+  } else if (v && v.length < EVENTO.verboMin) {
+    dica.textContent = 'Um pouco mais longo: use pelo menos 3 letras.'; dica.classList.add('on');
+  } else dica.classList.remove('on');
+  const p = EVENTO.pilares.find((x) => x.id === estado.pilar);
+  const f = $('#fruto-previa');
+  f.textContent = v ? v[0].toUpperCase() + v.slice(1) : '?';
+  f.style.fontSize = v.length > 9 ? '9px' : v.length > 6 ? '11px' : '13px';
+  f.style.background = p ? p.corTelao : '#d8e2e1';
+  f.style.color = p ? corTextoSobre(p.corTelao) : '#fff';
+  $('#enviar').disabled = !(estado.pilar && validar()) || estado.enviando;
+}
+verboEl.addEventListener('input', () => { $('#erro').classList.remove('on'); atualizar(); });
+verboEl.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !$('#enviar').disabled) { e.preventDefault(); enviar(); } });
+
+// ---- envio com reenvio automático (Wi-Fi de evento oscila)
+const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
+async function postar(corpo) {
+  let ultima;
+  for (let tentativa = 0; tentativa < 7; tentativa++) {
+    try {
+      const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 9000);
+      const r = await fetch('/api/respostas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo), signal: ctl.signal });
+      clearTimeout(t);
+      const j = await r.json().catch(() => ({}));
+      if (r.ok) return j;
+      if (r.status >= 400 && r.status < 500) { const e = new Error(j.mensagem || 'Erro'); e.definitivo = true; e.codigo = j.erro; throw e; }
+      ultima = new Error(j.mensagem || 'Falha temporária');
+    } catch (e) { if (e.definitivo) throw e; ultima = e; }
+    $('#enviar').textContent = 'Conexão lenta, tentando de novo…';
+    await esperar(1200 * (tentativa + 1) + Math.random() * 600);
+  }
+  throw ultima || new Error('Sem conexão');
+}
+async function enviar() {
+  const v = validar(); if (!v || !estado.pilar || estado.enviando) return;
+  estado.enviando = true; $('#erro').classList.remove('on');
+  $('#enviar').disabled = true; $('#enviar').textContent = 'Enviando…';
+  if (!estado.envioId) estado.envioId = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2));
+  try {
+    // Envia o texto como foi digitado; o servidor limpa e aplica o filtro (assim "p0rra" não escapa).
+    await postar({ envio_id: estado.envioId, pilar: estado.pilar, verbo: verboEl.value.trim().split(/\s+/)[0], area: estado.area, aparelho });
+    enviados += 1; guardar('cl_enviados', String(enviados));
+    const p = EVENTO.pilares.find((x) => x.id === estado.pilar);
+    const ok = $('#ok-verbo'); ok.textContent = v[0].toUpperCase() + v.slice(1); ok.style.background = p.cor;
+    const restam = EVENTO.maxPorAparelho - enviados;
+    $('#outro').hidden = restam <= 0;
+    $('#ok-limite').textContent = restam > 0 ? `Você ainda pode enviar ${restam} ${restam === 1 ? 'compromisso' : 'compromissos'}.` : 'Você já usou todos os seus envios. Obrigado!';
+    mostrar('ok');
+    estado.envioId = null;
+  } catch (e) {
+    if (e.codigo === 'encerrada') return mostrar('fim');
+    const msg = e.definitivo ? e.message : 'Não consegui enviar. Verifique sua conexão e toque de novo: seu compromisso não será duplicado.';
+    $('#erro').textContent = msg; $('#erro').classList.add('on');
+  } finally {
+    estado.enviando = false; $('#enviar').textContent = 'Enviar meu compromisso'; atualizar();
+  }
+}
+$('#enviar').addEventListener('click', enviar);
+$('#outro').addEventListener('click', () => {
+  verboEl.value = ''; estado.pilar = null;
+  boxPilares.querySelectorAll('.pilar').forEach((el) => { el.setAttribute('aria-checked', 'false'); el.style.borderColor = ''; });
+  atualizar(); mostrar('form'); window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+function mostrar(qual) {
+  $('#tela-form').hidden = qual !== 'form';
+  $('#tela-ok').classList.toggle('on', qual === 'ok');
+  $('#tela-fim').classList.toggle('on', qual === 'fim');
+}
+
+// Coleta encerrada? (não bloqueia a página se a rede falhar)
+fetch('/api/respostas?estado=1').then((r) => r.json()).then((j) => { if (j && j.coleta_aberta === false) mostrar('fim'); }).catch(() => {});
+if (enviados >= EVENTO.maxPorAparelho) { $('#ok-verbo').textContent = '✓'; $('#ok-verbo').style.background = '#0EAF9E'; $('#outro').hidden = true; $('#ok-limite').textContent = 'Você já usou todos os seus envios. Obrigado!'; mostrar('ok'); }
+atualizar();
+</script>
+</body>
+</html>
